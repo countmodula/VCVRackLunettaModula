@@ -1,0 +1,105 @@
+{
+  "slug": "LunettaModula",
+  "name": "Lunetta Modula by Count Modula",
+  "version": "1.0DEV",
+  "license": "GPL-3.0-only",
+  "brand": "Lunetta Modula",
+  "author": "Adam Verspaget",
+  "authorEmail": "CountModula@gmail.com",
+  "authorUrl": "https://github.com/countmodula",
+  "pluginUrl": "https://github.com/countmodula/VCVRackLunetta/blob/master/README.md",
+  "manualUrl": "https://github.com/countmodula/VCVRackLunetta/blob/master/MANUAL.md",
+  "changelogUrl": "https://github.com/countmodula/VCVRackLunetta/blob/master/CHANGELOG.md",
+  "sourceUrl": "https://github.com/countmodula/VCVRackLunetta",
+  "donateUrl": "https://paypal.me/countmodula?locale.x=en_AU",
+  "modules": [
+		{
+		  "slug": "Buttons",
+		  "name": "Hex manual logic buttons",
+		  "description": "Hex manual logic buttons",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4000",
+		  "name": "CD4000 Dual 3-Input NOR Gate plus Inverter",
+		  "description": "Dual 3-Input NOR Gate plus Inverter",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4001",
+		  "name": "CD4001 Quad 2-Input NOR Gate",
+		  "description": "Quad 2-Input NOR Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+{
+		  "slug": "CD4002",
+		  "name": "CD4002 Dual 4-Input NOR Gate",
+		  "description": "Dual 4-Input NOR Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+{
+		  "slug": "CD4011",
+		  "name": "CD4011 Quad 2-Input NAND Gate",
+		  "description": "Quad 2-Input NAND Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+{
+		  "slug": "CD4012",
+		  "name": "CD4002 Dual 4-Input NAND Gate",
+		  "description": "Dual 4-Input NAND Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+{
+		  "slug": "CD4019",
+		  "name": "CD4019 Quad AND-OR Select Gate",
+		  "description": "Quad AND-OR Select Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4030",
+		  "name": "CD4030 Quad 2-Input XOR Gate",
+		  "description": "Quad 2-Input XOR Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+{
+		  "slug": "CD4049",
+		  "name": "CD4049 Hex Inverter",
+		  "description": "Hex Inverter",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4071",
+		  "name": "CD4071 Quad 2-Input OR Gate",
+		  "description": "Quad 2-Input OR Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+{
+		  "slug": "CD4072",
+		  "name": "CD4072 Dual 4-Input OR Gate",
+		  "description": "Dual 4-Input OR Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		}
+	]
+}
