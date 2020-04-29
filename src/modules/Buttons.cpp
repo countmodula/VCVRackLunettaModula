@@ -6,6 +6,10 @@
 #include "../LunettaModula.hpp"
 #include "../inc/Utility.hpp"
 
+
+// used by mode management includes
+#define MODULE_NAME Buttons
+
 #define NUM_GATES 6
 
 struct Buttons : Module {
@@ -26,6 +30,9 @@ struct Buttons : Module {
 		NUM_LIGHTS
 	};
 	
+	// add the variables we'll use when managing modes
+	#include "../modes/modeVariables.hpp"
+	
 	bool latched[NUM_GATES] = {};
 	bool buttonValue[NUM_GATES] = {};
 	
@@ -43,7 +50,13 @@ struct Buttons : Module {
 		for(int i = 0; i < NUM_GATES; i++)
 			buttonValue[i] = outValue[i] = latched[i] = false;
 	}
-
+	
+	void setIOMode (int mode) {
+		
+		// set gate voltage
+		#include "../modes/setGateVoltage.hpp"
+	}	
+	
 	json_t *dataToJson() override {
 		json_t *root = json_object();
 
@@ -59,6 +72,9 @@ struct Buttons : Module {
 
 		json_object_set_new(root, "modes", mod);
 		json_object_set_new(root, "states", val);
+
+		// add the I/O mode details
+		#include "../modes/dataToJson.hpp"		
 		
 		return root;
 	}
@@ -81,6 +97,9 @@ struct Buttons : Module {
 					outValue[g] = json_boolean_value(v);
 			}
 		}
+		
+		// grab the I/O mode details
+		#include "../modes/dataFromJson.hpp"
 	}	
 
 	void process(const ProcessArgs &args) override {
@@ -122,7 +141,7 @@ struct ButtonsWidget : ModuleWidget {
 		for (int g = 0; g < NUM_GATES; g++) {
 		
 			// buttons
-			addParam(createParamCentered<LunettaModulaPBSwitchMomentary>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_ROWS6[STD_ROW1 + g]), module, Buttons::BTN_PARAMS + g));
+			addParam(createParamCentered<LunettaModulaPBSwitchMomentaryUnlit>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_ROWS6[STD_ROW1 + g]), module, Buttons::BTN_PARAMS + g));
 			
 			// Q output
 			addOutput(createOutputCentered<LunettaModulaLogicOutputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS6[STD_ROW1 + g]), module, Buttons::Q_OUTPUTS + g));
@@ -133,8 +152,8 @@ struct ButtonsWidget : ModuleWidget {
 		}
 	}
 	
-	// mode menu item
-	struct ModeAllMenuItem : MenuItem {
+	// all button mode menu item
+	struct ButtonModeAllMenuItem : MenuItem {
 		ButtonsWidget *widget;
 		Buttons *module;
 		bool latch;
@@ -160,8 +179,8 @@ struct ButtonsWidget : ModuleWidget {
 		}
 	};		
 	
-	// all button mode menu item
-	struct ModeMenuItem : MenuItem {
+	// button mode menu item
+	struct ButtonModeMenuItem : MenuItem {
 		ButtonsWidget *widget;
 		Buttons *module;
 		int id;
@@ -185,8 +204,8 @@ struct ButtonsWidget : ModuleWidget {
 		}
 	};		
 	
-	// mode menu 
-	struct ModeMenu : MenuItem {
+	// button mode menu 
+	struct ButtonModeMenu : MenuItem {
 		ButtonsWidget *widget;
 		Buttons *module;
 		
@@ -200,29 +219,32 @@ struct ButtonsWidget : ModuleWidget {
 		Menu *createChildMenu() override {
 			Menu *menu = new Menu;
 
-			ModeAllMenuItem *modeMenuItemAllLatched = createMenuItem<ModeAllMenuItem>("All Latched");
-			modeMenuItemAllLatched->widget = widget;
-			modeMenuItemAllLatched->module = module;
-			modeMenuItemAllLatched->latch = true;
-			menu->addChild(modeMenuItemAllLatched);
+			ButtonModeAllMenuItem *bModeMenuItemAllLatched = createMenuItem<ButtonModeAllMenuItem>("All Latched");
+			bModeMenuItemAllLatched->widget = widget;
+			bModeMenuItemAllLatched->module = module;
+			bModeMenuItemAllLatched->latch = true;
+			menu->addChild(bModeMenuItemAllLatched);
 
-			ModeAllMenuItem *modeMenuItemAllMom = createMenuItem<ModeAllMenuItem>("All Momentary");
-			modeMenuItemAllMom->widget = widget;
-			modeMenuItemAllMom->module = module;
-			modeMenuItemAllMom->latch = false;
-			menu->addChild(modeMenuItemAllMom);	
+			ButtonModeAllMenuItem *nModeMenuItemAllMom = createMenuItem<ButtonModeAllMenuItem>("All Momentary");
+			nModeMenuItemAllMom->widget = widget;
+			nModeMenuItemAllMom->module = module;
+			nModeMenuItemAllMom->latch = false;
+			menu->addChild(nModeMenuItemAllMom);	
 			
 			for (int i = 0; i < NUM_GATES; i++) {
-				ModeMenuItem *modeMenuItem = createMenuItem<ModeMenuItem>(labels[i], CHECKMARK(module->latched[i]));
-				modeMenuItem->widget = widget;
-				modeMenuItem->module = module;
-				modeMenuItem->id = i;
-				menu->addChild(modeMenuItem);
+				ButtonModeMenuItem *bModeMenuItem = createMenuItem<ButtonModeMenuItem>(labels[i], CHECKMARK(module->latched[i]));
+				bModeMenuItem->widget = widget;
+				bModeMenuItem->module = module;
+				bModeMenuItem->id = i;
+				menu->addChild(bModeMenuItem);
 			}
 			
 			return menu;	
 		}
 	};	
+	
+	// include the I/O mode menu item struct we'll need when we add the theme menu items
+	#include "../modes/modeMenuItem.hpp"
 	
 	void appendContextMenu(Menu *menu) override {
 		Buttons *module = dynamic_cast<Buttons*>(this->module);
@@ -232,10 +254,13 @@ struct ButtonsWidget : ModuleWidget {
 		menu->addChild(new MenuSeparator());
 
 		// add mode menu item
-		ModeMenu *modeMenuItem = createMenuItem<ModeMenu>("Button Modes", RIGHT_ARROW);
-		modeMenuItem->widget = this;
-		modeMenuItem->module = module;
-		menu->addChild(modeMenuItem);
+		ButtonModeMenu *bModeMenuItem = createMenuItem<ButtonModeMenu>("Button Modes", RIGHT_ARROW);
+		bModeMenuItem->widget = this;
+		bModeMenuItem->module = module;
+		menu->addChild(bModeMenuItem);
+		
+		// add the I/O mode menu items
+		#include "../modes/modeMenus.hpp"
 	}	
 };
 

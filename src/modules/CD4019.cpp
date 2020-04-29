@@ -7,6 +7,9 @@
 #include "../inc/Utility.hpp"
 #include "../inc/CMOSInput.hpp"
 
+// used by mode management includes
+#define MODULE_NAME CD4019
+
 #define NUM_GATES 4
 
 struct CD4019 : Module {
@@ -30,6 +33,9 @@ struct CD4019 : Module {
 		NUM_LIGHTS
 	};
 	
+	// add the variables we'll use when managing modes
+	#include "../modes/modeVariables.hpp"
+	
 	CMOSInput aInputs[NUM_GATES];
 	CMOSInput bInputs[NUM_GATES];
 	CMOSInput kaInput;
@@ -49,16 +55,36 @@ struct CD4019 : Module {
 		kbInput.reset();
 	}
 
+	void setIOMode (int mode) {
+		
+		// set CMOS input properties
+		for (int g = 0; g < NUM_GATES; g++) {
+			aInputs[g].setMode(mode);
+			bInputs[g].setMode(mode);
+		}
+		
+		kaInput.setMode(mode);
+		kbInput.setMode(mode);
+		
+		// set gate voltage
+		#include "../modes/setGateVoltage.hpp"
+	}
+
 	json_t *dataToJson() override {
 		json_t *root = json_object();
 
 		json_object_set_new(root, "moduleVersion", json_integer(1));
 		
+		// add the I/O mode details
+		#include "../modes/dataToJson.hpp"		
+
 		return root;
 	}
 	
 	void dataFromJson(json_t *root) override {
 
+		// grab the I/O mode details
+		#include "../modes/dataFromJson.hpp"
 	}	
 
 	void process(const ProcessArgs &args) override {
@@ -131,6 +157,20 @@ struct CD4019Widget : ModuleWidget {
 		addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL5], STD_ROWS5[STD_ROW5]), module, CD4019::STATUS_LIGHTS + 1));
 		addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL5], STD_ROWS5[STD_ROW5] + 10), module, CD4019::STATUS_LIGHTS + 2));
 	}
+
+	// include the I/O mode menu item struct we'll need when we add the theme menu items
+	#include "../modes/modeMenuItem.hpp"
+
+	void appendContextMenu(Menu *menu) override {
+		CD4019 *module = dynamic_cast<CD4019*>(this->module);
+		assert(module);
+
+		// blank separator
+		menu->addChild(new MenuSeparator());
+		
+		// add the I/O mode menu items
+		#include "../modes/modeMenus.hpp"
+	}		
 };
 
 Model *modelCD4019 = createModel<CD4019, CD4019Widget>("CD4019");

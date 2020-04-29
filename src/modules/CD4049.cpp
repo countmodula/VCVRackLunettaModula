@@ -7,6 +7,9 @@
 #include "../inc/Utility.hpp"
 #include "../inc/CMOSInput.hpp"
 
+// used by mode management includes
+#define MODULE_NAME CD4049
+
 #define NUM_GATES 6
 
 struct CD4049 : Module {
@@ -26,6 +29,9 @@ struct CD4049 : Module {
 		NUM_LIGHTS
 	};
 	
+	// add the variables we'll use when managing modes
+	#include "../modes/modeVariables.hpp"
+	
 	CMOSInput iInputs[NUM_GATES];
 	
 	CD4049() {
@@ -36,16 +42,33 @@ struct CD4049 : Module {
 		for (int g = 0; g < NUM_GATES; g++)
 			iInputs[g].reset();
 	}
+	
+	void setIOMode (int mode) {
+		
+		// set CMOS input properties
+		for (int g = 0; g < NUM_GATES; g++) {
+			iInputs[g].setMode(mode);
+		}
+		
+		// set gate voltage
+		#include "../modes/setGateVoltage.hpp"
+	}	
 
 	json_t *dataToJson() override {
 		json_t *root = json_object();
 
 		json_object_set_new(root, "moduleVersion", json_integer(1));
 
+		// add the I/O mode details
+		#include "../modes/dataToJson.hpp"		
+
 		return root;
 	}
 	
 	void dataFromJson(json_t *root) override {
+		
+		// grab the I/O mode details
+		#include "../modes/dataFromJson.hpp"
 	}	
 
 	void process(const ProcessArgs &args) override {
@@ -81,6 +104,20 @@ struct CD4049Widget : ModuleWidget {
 			addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL3] + 12, STD_ROWS6[STD_ROW1 + g] - 19), module, CD4049::Q_LIGHTS + g));
 		}
 	}	
+
+	// include the I/O mode menu item struct we'll need when we add the theme menu items
+	#include "../modes/modeMenuItem.hpp"
+
+	void appendContextMenu(Menu *menu) override {
+		CD4049 *module = dynamic_cast<CD4049*>(this->module);
+		assert(module);
+
+		// blank separator
+		menu->addChild(new MenuSeparator());
+		
+		// add the I/O mode menu items
+		#include "../modes/modeMenus.hpp"
+	}		
 };
 
 Model *modelCD4049 = createModel<CD4049, CD4049Widget>("CD4049");
