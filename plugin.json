@@ -86,6 +86,14 @@
 		  ]
 		},
 		{
+		  "slug": "CD4068",
+		  "name": "CD4068 8-Input AND/NAND Gate",
+		  "description": "8-Input AND/NAND Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
 		  "slug": "CD4071",
 		  "name": "CD4071 Quad 2-Input OR Gate",
 		  "description": "Quad 2-Input OR Gate",
@@ -93,10 +101,34 @@
 			"Logic"
 		  ]
 		},
-{
+		{
 		  "slug": "CD4072",
 		  "name": "CD4072 Dual 4-Input OR Gate",
 		  "description": "Dual 4-Input OR Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4077",
+		  "name": "CD4077 Quad 2-Input XNOR Gate",
+		  "description": "Quad 2-Input XNOR Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4081",
+		  "name": "CD4081 Quad 2-Input AND Gate",
+		  "description": "Quad 2-Input AND Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4082",
+		  "name": "CD4082 Dual 4-Input AND Gate",
+		  "description": "Dual 4-Input AND Gate",
 		  "tags": [
 			"Logic"
 		  ]

@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
-//	Lunetta Modula Plugin for VCV Rack by Count Modula - CD4030
-//	Quad 2 Input XOR Gate
+//	Lunetta Modula Plugin for VCV Rack by Count Modula - CD4081
+//	Quad 2 Input AND Gate
 //  Copyright (C) 2020  Adam Verspaget
 //----------------------------------------------------------------------------
 #include "../LunettaModula.hpp"
@@ -8,11 +8,11 @@
 #include "../inc/CMOSInput.hpp"
 
 // used by mode management includes
-#define MODULE_NAME CD4030
+#define MODULE_NAME CD4081
 
 #define NUM_GATES 4
 
-struct CD4030 : Module {
+struct CD4081 : Module {
 	enum ParamIds {
 		NUM_PARAMS
 	};
@@ -32,11 +32,11 @@ struct CD4030 : Module {
 	
 	// add the variables we'll use when managing modes
 	#include "../modes/modeVariables.hpp"
-	
+
 	CMOSInput aInputs[NUM_GATES];
 	CMOSInput bInputs[NUM_GATES];
 	
-	CD4030() {
+	CD4081() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 	}
 	
@@ -57,7 +57,7 @@ struct CD4030 : Module {
 		
 		// set gate voltage
 		#include "../modes/setGateVoltage.hpp"
-	}
+	}		
 
 	json_t *dataToJson() override {
 		json_t *root = json_object();
@@ -79,8 +79,8 @@ struct CD4030 : Module {
 	void process(const ProcessArgs &args) override {
 		
 		for (int g = 0; g < NUM_GATES; g++) {
-			bool a = aInputs[g].process(inputs[A_INPUTS + g].getVoltage());
-			bool q = (a == bInputs[g].process(inputs[B_INPUTS + g].getVoltage()));
+			bool q = aInputs[g].process(inputs[A_INPUTS + g].getVoltage());
+			q &= bInputs[g].process(inputs[B_INPUTS + g].getVoltage());
 
 			outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
 			lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
@@ -88,10 +88,10 @@ struct CD4030 : Module {
 	}
 };
 
-struct CD4030Widget : ModuleWidget {
-	CD4030Widget(CD4030 *module) {
+struct CD4081Widget : ModuleWidget {
+	CD4081Widget(CD4081 *module) {
 		setModule(module);
-		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/CD4030.svg")));
+		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/CD4081.svg")));
 
 		// screws
 		#include "../components/stdScrews.hpp"	
@@ -101,14 +101,14 @@ struct CD4030Widget : ModuleWidget {
 		for (int g = 0; g < NUM_GATES; g++) {
 		
 			// A/B inputs
-			addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[cols[g]], STD_ROWS6[rows[g]]), module, CD4030::A_INPUTS + g));
-			addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[cols[g]], STD_ROWS6[rows[g] + 1]), module, CD4030::B_INPUTS + g));
+			addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[cols[g]], STD_ROWS6[rows[g]]), module, CD4081::A_INPUTS + g));
+			addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[cols[g]], STD_ROWS6[rows[g] + 1]), module, CD4081::B_INPUTS + g));
 			
 			// Q output
-			addOutput(createOutputCentered<LunettaModulaLogicOutputJack>(Vec(STD_COLUMN_POSITIONS[cols[g]], STD_ROWS6[rows[g] + 2]), module, CD4030::Q_OUTPUTS + g));
+			addOutput(createOutputCentered<LunettaModulaLogicOutputJack>(Vec(STD_COLUMN_POSITIONS[cols[g]], STD_ROWS6[rows[g] + 2]), module, CD4081::Q_OUTPUTS + g));
 			
 			// lights
-			addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[cols[g]] + 12, STD_ROWS6[rows[g] + 2] - 19), module, CD4030::Q_LIGHTS + g));
+			addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[cols[g]] + 12, STD_ROWS6[rows[g] + 2] - 19), module, CD4081::Q_LIGHTS + g));
 		}
 	}
 
@@ -116,7 +116,7 @@ struct CD4030Widget : ModuleWidget {
 	#include "../modes/modeMenuItem.hpp"
 
 	void appendContextMenu(Menu *menu) override {
-		CD4030 *module = dynamic_cast<CD4030*>(this->module);
+		CD4081 *module = dynamic_cast<CD4081*>(this->module);
 		assert(module);
 
 		// blank separator
@@ -127,4 +127,4 @@ struct CD4030Widget : ModuleWidget {
 	}		
 };
 
-Model *modelCD4030 = createModel<CD4030, CD4030Widget>("CD4030");
+Model *modelCD4081 = createModel<CD4081, CD4081Widget>("CD4081");

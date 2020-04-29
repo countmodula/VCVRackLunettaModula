@@ -9,8 +9,8 @@ class CMOSInput {
 		float Vdd = VDD;
 		
 		// voltages for guaranteed high and low
-		float vLow = Vdd  * 0.3f;
-		float vHigh = Vdd  * 0.7f;
+		float vLow = Vdd  / 3.0f;
+		float vHigh = Vdd / 1.5f;
 		
 		// threshold around which noise causes instability
 		float vThresh = Vdd / 2.0;
