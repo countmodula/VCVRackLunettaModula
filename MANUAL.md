@@ -38,3 +38,9 @@ Most modules in this collection represent CMOS integrated circuits and are named
 
 <h3>Buttons</h3>
 This is a set of six manual logic buttons than can be configured idividually to operate in either latched or momentary fashion via the context menu.
+
+<h3>Ones</h3>
+A set of constant logical "Ones".
+
+<h3>Zeroes</h3>
+A set of constant logical "Zeroes".

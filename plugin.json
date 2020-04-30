@@ -53,7 +53,7 @@
 			"Logic"
 		  ]
 		},
-{
+		{
 		  "slug": "CD4012",
 		  "name": "CD4002 Dual 4-Input NAND Gate",
 		  "description": "Dual 4-Input NAND Gate",
@@ -61,7 +61,7 @@
 			"Logic"
 		  ]
 		},
-{
+		{
 		  "slug": "CD4019",
 		  "name": "CD4019 Quad AND-OR Select Gate",
 		  "description": "Quad AND-OR Select Gate",
@@ -78,6 +78,14 @@
 		  ]
 		},
 {
+		  "slug": "CD4042",
+		  "name": "CD4042 Quad Clocked \"D\" Latch",
+		  "description": "Quad Clocked \"D\" Latch",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
 		  "slug": "CD4049",
 		  "name": "CD4049 Hex Inverter",
 		  "description": "Hex Inverter",
@@ -118,6 +126,14 @@
 		  ]
 		},
 		{
+		  "slug": "CD4078",
+		  "name": "CD4078 8-Input OR/NOR Gate",
+		  "description": "8-Input OR/NOR Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
 		  "slug": "CD4081",
 		  "name": "CD4081 Quad 2-Input AND Gate",
 		  "description": "Quad 2-Input AND Gate",
@@ -129,6 +145,30 @@
 		  "slug": "CD4082",
 		  "name": "CD4082 Dual 4-Input AND Gate",
 		  "description": "Dual 4-Input AND Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "ConstantOnes",
+		  "name": "Ones",
+		  "description": "Constant Logical Ones",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "ConstantZeroes",
+		  "name": "Zeroes",
+		  "description": "Constant Logical Zeroes",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4086",
+		  "name": "CD4086 Expandable 4-Wide 2-Input AND-OR-INVERT Gate",
+		  "description": "Expandable 4-Wide 2-Input AND-OR-INVERT Gate",
 		  "tags": [
 			"Logic"
 		  ]

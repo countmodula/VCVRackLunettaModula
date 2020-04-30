@@ -34,6 +34,8 @@ Follow Count Modula on facebook:
 </p>
 <ul>
 <li>BUTTONS Hex Manual Logic</li>
+<li>Ones - Constant Logical "Ones"</li>
+<li>Zeroes - Constant Logical "Zeroes"</li>
 <li>CD4000 Dual 3-Input NOR Gate plus Inverter</li>
 <li>CD4001 Quad 2-Input NOR Gate</li>
 <li>CD4002 Dual 4-Input NOR Gate</li>
@@ -41,11 +43,14 @@ Follow Count Modula on facebook:
 <li>CD4012 Dual 4-Input NAND Gate</li>
 <li>CD4019 Quad AND-OR Select Gate</li>
 <li>CD4030 Quad 2-Input XOR Gate</li>
+<li>CD4042 Quad Clocked "D" Latch</i>
 <li>CD4049 Hex Inverter</li>
 <li>CD4068 8-Input AND/NAND Gate</li>
 <li>CD4071 Quad 2-Input OR Gate</li>
 <li>CD4072 Dual 4-Input OR Gate</li>
 <li>CD4077 Quad 2-Input XNOR Gate</li>
+<li>CD4078 8-Input OR/NOR Gate</li>
 <li>CD4081 Quad 2-Input AND Gate</li>
 <li>CD4082 Dual 4-Input AND Gate</li>
+<li>CD4086 Expandable 4-Wide 2-Input AND-OR-INVERT Gate</li>
 </ul>

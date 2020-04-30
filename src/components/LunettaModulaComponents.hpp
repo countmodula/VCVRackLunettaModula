@@ -34,6 +34,17 @@ struct LunettaModulaLogicOutputJack : SVGPort {
 	}
 };
 
+struct LunettaModulaLogicConstantHighJack : SVGPort {
+	LunettaModulaLogicConstantHighJack() {
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/LogicConstantHighJack.svg")));
+	}
+};
+
+struct LunettaModulaLogicConstantLowJack : SVGPort {
+	LunettaModulaLogicConstantLowJack() {
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/LogicConstantLowJack.svg")));
+	}
+};
 
 //-------------------------------------------------------------------
 // on-off toggle switch
