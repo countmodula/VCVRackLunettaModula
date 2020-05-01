@@ -94,6 +94,14 @@
 		  ]
 		},
 		{
+		  "slug": "CD4063",
+		  "name": "CD4063 4-Bit Magnitude Comparator",
+		  "description": "4-Bit Magnitude Comparator",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
 		  "slug": "CD4068",
 		  "name": "CD4068 8-Input AND/NAND Gate",
 		  "description": "8-Input AND/NAND Gate",
@@ -169,6 +177,14 @@
 		  "slug": "CD4086",
 		  "name": "CD4086 Expandable 4-Wide 2-Input AND-OR-INVERT Gate",
 		  "description": "Expandable 4-Wide 2-Input AND-OR-INVERT Gate",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "MC14530",
+		  "name": "MC14530 Dual 5 Input Majority Gate",
+		  "description": "Dual 5 Input Majority Gate",
 		  "tags": [
 			"Logic"
 		  ]

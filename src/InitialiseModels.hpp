@@ -19,6 +19,7 @@ p->addModel(modelCD4019);
 p->addModel(modelCD4030);
 p->addModel(modelCD4042);
 p->addModel(modelCD4049);
+p->addModel(modelCD4063);
 p->addModel(modelCD4068);
 p->addModel(modelCD4071);
 p->addModel(modelCD4072);
@@ -27,4 +28,4 @@ p->addModel(modelCD4078);
 p->addModel(modelCD4081);
 p->addModel(modelCD4082);
 p->addModel(modelCD4086);
-
+p->addModel(modelMC14530);

@@ -45,6 +45,7 @@ Follow Count Modula on facebook:
 <li>CD4030 Quad 2-Input XOR Gate</li>
 <li>CD4042 Quad Clocked "D" Latch</i>
 <li>CD4049 Hex Inverter</li>
+<li>CD4063 4-Bit Magnitude Comparator</li>
 <li>CD4068 8-Input AND/NAND Gate</li>
 <li>CD4071 Quad 2-Input OR Gate</li>
 <li>CD4072 Dual 4-Input OR Gate</li>
@@ -53,4 +54,5 @@ Follow Count Modula on facebook:
 <li>CD4081 Quad 2-Input AND Gate</li>
 <li>CD4082 Dual 4-Input AND Gate</li>
 <li>CD4086 Expandable 4-Wide 2-Input AND-OR-INVERT Gate</li>
+<li>MC14530 Dual 5 Input Majority Gate</li>
 </ul>
