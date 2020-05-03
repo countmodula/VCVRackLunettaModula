@@ -20,9 +20,9 @@
 </tr>
 
 <tr valign="top">
-<td align="center">28-Apr-2020</td>
-<td align="center">v1.0.0DEV</td>
-<td>Initial Development Release</td>
+<td align="center">03-May-2020</td>
+<td align="center">v1.0.0</td>
+<td>Initial Release</td>
 </tr>
 </table>
 
