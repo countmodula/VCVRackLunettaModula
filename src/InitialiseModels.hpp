@@ -4,10 +4,12 @@
 //  Copyright (C) 2020  Adam Verspaget
 //----------------------------------------------------------------------------
 
-// Add all Models defined throughout the plugin
+// utilities
+p->addModel(modelADC);
 p->addModel(modelButtons);
 p->addModel(modelConstantOnes);
 p->addModel(modelConstantZeroes);
+p->addModel(modelDAC);
 
 // gates
 p->addModel(modelCD4000);
@@ -18,6 +20,7 @@ p->addModel(modelCD4012);
 p->addModel(modelCD4019);
 p->addModel(modelCD4030);
 p->addModel(modelCD4042);
+p->addModel(modelCD4048);
 p->addModel(modelCD4049);
 p->addModel(modelCD4063);
 p->addModel(modelCD4068);

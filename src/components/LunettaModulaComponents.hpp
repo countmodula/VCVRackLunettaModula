@@ -18,7 +18,6 @@ struct LunettaModulaScrew : SVGScrew {
 	}
 };
 
-
 //-------------------------------------------------------------------
 // Ports
 //-------------------------------------------------------------------
@@ -43,6 +42,74 @@ struct LunettaModulaLogicConstantHighJack : SVGPort {
 struct LunettaModulaLogicConstantLowJack : SVGPort {
 	LunettaModulaLogicConstantLowJack() {
 		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/LogicConstantLowJack.svg")));
+	}
+};
+
+struct LunettaModulaAnalogInputJack : SVGPort {
+	LunettaModulaAnalogInputJack() {
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/AnalogInputJack.svg")));
+	}
+};
+
+struct LunettaModulaAnalogOutputJack : SVGPort {
+	LunettaModulaAnalogOutputJack() {
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/AnalogOutputJack.svg")));
+	}
+};
+
+//-------------------------------------------------------------------
+// Knobs
+//-------------------------------------------------------------------
+
+// base knob
+struct LunettaModulaKnob : SVGKnob {
+	LunettaModulaKnob() {
+		minAngle = -0.83*M_PI;
+		maxAngle = 0.83*M_PI;
+	}
+};
+
+// coloured knobs
+struct LunettaModulaKnobRed : LunettaModulaKnob {
+	LunettaModulaKnobRed() {
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/KnobRed.svg")));
+	}
+};
+
+//-------------------------------------------------------------------
+// rotary switches
+//-------------------------------------------------------------------
+// TODO: parameterise the colour
+
+struct LunettaModulaRotarySwitch : SVGKnob {
+	LunettaModulaRotarySwitch() {
+		minAngle = -0.83*M_PI;
+		maxAngle = 0.83*M_PI;
+		snap = true;
+		smooth = false;
+	}
+	
+	// handle the manually entered values
+	void onChange(const event::Change &e) override {
+		
+		SVGKnob::onChange(e);
+		
+		paramQuantity->setValue(roundf(paramQuantity->getValue()));
+	}
+	
+	
+	// override the base randomizer as it sets switches to invalid values.
+	void randomize() override {
+		SVGKnob::randomize();
+		
+		paramQuantity->setValue(roundf(paramQuantity->getValue()));
+	}	
+	
+};
+
+struct LunettaModulaRotarySwitchRed : LunettaModulaRotarySwitch {
+	LunettaModulaRotarySwitchRed() {
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/KnobRed.svg")));
 	}
 };
 

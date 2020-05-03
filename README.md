@@ -33,7 +33,9 @@ Follow Count Modula on facebook:
 <a href="CHANGELOG.md">Change Log</a>
 </p>
 <ul>
+<li>ADC - Analogue to Digital Converter</li>
 <li>BUTTONS Hex Manual Logic</li>
+<li>DAC - Digital to Analogue Converter</li>
 <li>Ones - Constant Logical "Ones"</li>
 <li>Zeroes - Constant Logical "Zeroes"</li>
 <li>CD4000 Dual 3-Input NOR Gate plus Inverter</li>
@@ -44,6 +46,7 @@ Follow Count Modula on facebook:
 <li>CD4019 Quad AND-OR Select Gate</li>
 <li>CD4030 Quad 2-Input XOR Gate</li>
 <li>CD4042 Quad Clocked "D" Latch</i>
+<li>CD4048 Multifunction Expandable 8-Input Gate</li>
 <li>CD4049 Hex Inverter</li>
 <li>CD4063 4-Bit Magnitude Comparator</li>
 <li>CD4068 8-Input AND/NAND Gate</li>

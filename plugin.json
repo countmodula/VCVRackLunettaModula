@@ -14,6 +14,22 @@
   "donateUrl": "https://paypal.me/countmodula?locale.x=en_AU",
   "modules": [
 		{
+		  "slug": "ADC",
+		  "name": "Analogue to Digital Converter",
+		  "description": "Analogue to Digital Converter",
+		  "tags": [
+			"Utility"
+		  ]
+		},
+		{
+		  "slug": "DAC",
+		  "name": "Digital to Analogue Converter",
+		  "description": "Digital to Analogue Converter",
+		  "tags": [
+			"Utility"
+		  ]
+		},
+		{
 		  "slug": "Buttons",
 		  "name": "Hex manual logic buttons",
 		  "description": "Hex manual logic buttons",
@@ -81,6 +97,14 @@
 		  "slug": "CD4042",
 		  "name": "CD4042 Quad Clocked \"D\" Latch",
 		  "description": "Quad Clocked \"D\" Latch",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4048",
+		  "name": "CD4048 Multifunction Expandable 8-Input Gate",
+		  "description": "Multifunction Expandable 8-Input Gate",
 		  "tags": [
 			"Logic"
 		  ]

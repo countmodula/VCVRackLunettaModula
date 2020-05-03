@@ -4,6 +4,8 @@
 //  Copyright (C) 2020  Adam Verspaget
 //----------------------------------------------------------------------------
 
+extern Model *modelADC;
+extern Model *modelDAC;
 extern Model *modelButtons;
 extern Model *modelConstantOnes;
 extern Model *modelConstantZeroes;
@@ -15,6 +17,7 @@ extern Model *modelCD4012;
 extern Model *modelCD4019;
 extern Model *modelCD4030;
 extern Model *modelCD4042;
+extern Model *modelCD4048;
 extern Model *modelCD4049;
 extern Model *modelCD4063;
 extern Model *modelCD4068;
