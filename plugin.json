@@ -1,16 +1,16 @@
 {
   "slug": "LunettaModula",
   "name": "Lunetta Modula by Count Modula",
-  "version": "1.0DEV",
+  "version": "1.0.0",
   "license": "GPL-3.0-only",
   "brand": "Lunetta Modula",
   "author": "Adam Verspaget",
   "authorEmail": "CountModula@gmail.com",
   "authorUrl": "https://github.com/countmodula",
-  "pluginUrl": "https://github.com/countmodula/VCVRackLunetta/blob/master/README.md",
-  "manualUrl": "https://github.com/countmodula/VCVRackLunetta/blob/master/MANUAL.md",
-  "changelogUrl": "https://github.com/countmodula/VCVRackLunetta/blob/master/CHANGELOG.md",
-  "sourceUrl": "https://github.com/countmodula/VCVRackLunetta",
+  "pluginUrl": "https://github.com/countmodula/VCVRackLunettaModula/blob/master/README.md",
+  "manualUrl": "https://github.com/countmodula/VCVRackLunettaModula/blob/master/MANUAL.md",
+  "changelogUrl": "https://github.com/countmodula/VCVRackLunettaModula/blob/master/CHANGELOG.md",
+  "sourceUrl": "https://github.com/countmodula/VCVRackLunettaModula",
   "donateUrl": "https://paypal.me/countmodula?locale.x=en_AU",
   "modules": [
 		{
