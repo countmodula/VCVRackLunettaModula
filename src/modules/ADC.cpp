@@ -136,6 +136,7 @@ struct ADCWidget : ModuleWidget {
 	// include the I/O mode menu item struct we'll need when we add the theme menu items
 	#include "../modes/modeMenuItem.hpp"
 	
+#ifdef CMOS_MODEL_ENABLED
 	void appendContextMenu(Menu *menu) override {
 		ADC *module = dynamic_cast<ADC*>(this->module);
 		assert(module);
@@ -145,7 +146,8 @@ struct ADCWidget : ModuleWidget {
 	
 		// add the I/O mode menu items
 		#include "../modes/modeMenus.hpp"
-	}	
+	}
+#endif
 };
 
 Model *modelADC = createModel<ADC, ADCWidget>("ADC");

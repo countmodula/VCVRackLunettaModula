@@ -3,7 +3,7 @@
 // 	common menu item structs for handling selecting I/O modes
 //  Copyright (C) 2020  Adam Verspaget
 //----------------------------------------------------------------------------
-
+#ifdef CMOS_MODEL_ENABLED
 // theme selection menu item
 struct ModeMenuItem : MenuItem {
 	MODULE_NAME *module;
@@ -45,3 +45,4 @@ struct ModeMenu : MenuItem {
 		return menu;	
 	}
 };
+#endif

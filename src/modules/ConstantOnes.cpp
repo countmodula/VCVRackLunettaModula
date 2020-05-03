@@ -96,6 +96,7 @@ struct ConstantOnesWidget : ModuleWidget {
 	// include the I/O mode menu item struct we'll need when we add the theme menu items
 	#include "../modes/modeMenuItem.hpp"
 
+#ifdef CMOS_MODEL_ENABLED
 	void appendContextMenu(Menu *menu) override {
 		ConstantOnes *module = dynamic_cast<ConstantOnes*>(this->module);
 		assert(module);
@@ -105,7 +106,8 @@ struct ConstantOnesWidget : ModuleWidget {
 		
 		// add the I/O mode menu items
 		#include "../modes/modeMenus.hpp"
-	}		
+	}
+#endif	
 };
 
 Model *modelConstantOnes = createModel<ConstantOnes, ConstantOnesWidget>("ConstantOnes");

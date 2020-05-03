@@ -131,6 +131,7 @@ struct DACWidget : ModuleWidget {
 	// include the I/O mode menu item struct we'll need when we add the theme menu items
 	#include "../modes/modeMenuItem.hpp"
 	
+#ifdef CMOS_MODEL_ENABLED
 	void appendContextMenu(Menu *menu) override {
 		DAC *module = dynamic_cast<DAC*>(this->module);
 		assert(module);
@@ -140,7 +141,8 @@ struct DACWidget : ModuleWidget {
 	
 		// add the I/O mode menu items
 		#include "../modes/modeMenus.hpp"
-	}	
+	}
+#endif	
 };
 
 Model *modelDAC = createModel<DAC, DACWidget>("DAC");

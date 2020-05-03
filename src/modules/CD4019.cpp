@@ -161,6 +161,7 @@ struct CD4019Widget : ModuleWidget {
 	// include the I/O mode menu item struct we'll need when we add the theme menu items
 	#include "../modes/modeMenuItem.hpp"
 
+#ifdef CMOS_MODEL_ENABLED
 	void appendContextMenu(Menu *menu) override {
 		CD4019 *module = dynamic_cast<CD4019*>(this->module);
 		assert(module);
@@ -170,7 +171,8 @@ struct CD4019Widget : ModuleWidget {
 		
 		// add the I/O mode menu items
 		#include "../modes/modeMenus.hpp"
-	}		
+	}	
+#endif	
 };
 
 Model *modelCD4019 = createModel<CD4019, CD4019Widget>("CD4019");

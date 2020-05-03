@@ -141,6 +141,7 @@ struct MC14530Widget : ModuleWidget {
 	// include the I/O mode menu item struct we'll need when we add the theme menu items
 	#include "../modes/modeMenuItem.hpp"
 
+#ifdef CMOS_MODEL_ENABLED
 	void appendContextMenu(Menu *menu) override {
 		MC14530 *module = dynamic_cast<MC14530*>(this->module);
 		assert(module);
@@ -150,7 +151,8 @@ struct MC14530Widget : ModuleWidget {
 		
 		// add the I/O mode menu items
 		#include "../modes/modeMenus.hpp"
-	}		
+	}
+#endif	
 };
 
 Model *modelMC14530 = createModel<MC14530, MC14530Widget>("MC14530");
