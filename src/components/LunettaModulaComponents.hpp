@@ -11,7 +11,7 @@ using namespace rack;
 //-------------------------------------------------------------------
 // screws
 //-------------------------------------------------------------------
-struct LunettaModulaScrew : SVGScrew {
+struct LunettaModulaScrew : SvgScrew {
 	LunettaModulaScrew() {
 		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/ScrewHex.svg")));
 		box.size = sw->box.size;
@@ -21,37 +21,37 @@ struct LunettaModulaScrew : SVGScrew {
 //-------------------------------------------------------------------
 // Ports
 //-------------------------------------------------------------------
-struct LunettaModulaLogicInputJack : SVGPort {
+struct LunettaModulaLogicInputJack : SvgPort {
 	LunettaModulaLogicInputJack() {
 		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/LogicInputJack.svg")));
 	}
 };
 
-struct LunettaModulaLogicOutputJack : SVGPort {
+struct LunettaModulaLogicOutputJack : SvgPort {
 	LunettaModulaLogicOutputJack() {
 		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/LogicOutputJack.svg")));
 	}
 };
 
-struct LunettaModulaLogicConstantHighJack : SVGPort {
+struct LunettaModulaLogicConstantHighJack : SvgPort {
 	LunettaModulaLogicConstantHighJack() {
 		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/LogicConstantHighJack.svg")));
 	}
 };
 
-struct LunettaModulaLogicConstantLowJack : SVGPort {
+struct LunettaModulaLogicConstantLowJack : SvgPort {
 	LunettaModulaLogicConstantLowJack() {
 		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/LogicConstantLowJack.svg")));
 	}
 };
 
-struct LunettaModulaAnalogInputJack : SVGPort {
+struct LunettaModulaAnalogInputJack : SvgPort {
 	LunettaModulaAnalogInputJack() {
 		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/AnalogInputJack.svg")));
 	}
 };
 
-struct LunettaModulaAnalogOutputJack : SVGPort {
+struct LunettaModulaAnalogOutputJack : SvgPort {
 	LunettaModulaAnalogOutputJack() {
 		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/AnalogOutputJack.svg")));
 	}
@@ -62,7 +62,7 @@ struct LunettaModulaAnalogOutputJack : SVGPort {
 //-------------------------------------------------------------------
 
 // base knob
-struct LunettaModulaKnob : SVGKnob {
+struct LunettaModulaKnob : SvgKnob {
 	LunettaModulaKnob() {
 		minAngle = -0.83*M_PI;
 		maxAngle = 0.83*M_PI;
@@ -81,7 +81,7 @@ struct LunettaModulaKnobRed : LunettaModulaKnob {
 //-------------------------------------------------------------------
 // TODO: parameterise the colour
 
-struct LunettaModulaRotarySwitch : SVGKnob {
+struct LunettaModulaRotarySwitch : SvgKnob {
 	LunettaModulaRotarySwitch() {
 		minAngle = -0.83*M_PI;
 		maxAngle = 0.83*M_PI;
@@ -92,7 +92,7 @@ struct LunettaModulaRotarySwitch : SVGKnob {
 	// handle the manually entered values
 	void onChange(const event::Change &e) override {
 		
-		SVGKnob::onChange(e);
+		SvgKnob::onChange(e);
 		
 		paramQuantity->setValue(roundf(paramQuantity->getValue()));
 	}
@@ -100,7 +100,7 @@ struct LunettaModulaRotarySwitch : SVGKnob {
 	
 	// override the base randomizer as it sets switches to invalid values.
 	void randomize() override {
-		SVGKnob::randomize();
+		SvgKnob::randomize();
 		
 		paramQuantity->setValue(roundf(paramQuantity->getValue()));
 	}	
