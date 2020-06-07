@@ -21,7 +21,7 @@
 
 
 <tr valign="top">
-<td align="center">??-???-2020</td>
+<td align="center">07-Jun-2020</td>
 <td align="center">v1.1.0</td>
 <td>
 <ul>New Modules:
