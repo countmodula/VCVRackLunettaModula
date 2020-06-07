@@ -19,6 +19,25 @@
 <th align="left">Notes</th>
 </tr>
 
+
+<tr valign="top">
+<td align="center">07-Jun-2020</td>
+<td align="center">v1.1.0</td>
+<td>
+<ul>New Modules:
+<li>CD4010 Hex Buffer</li>
+<li>CD4015 Dual 4-Stage Static Shift Register</i>
+<li>CD4017 Decade Counter/Divider</li>
+<li>CD4022 Octal Counter/Divider</li>
+<li>CD4023 Triple 3 Input NAND Gate</li>
+<li>CD4025 Triple 3 Input NOR Gate</li>
+<li>CD4031 64 Stage Static Shift Register</li>
+<li>CD4041 Quad True/Complement Buffer</li>
+<li>CD4532 8-Bit Priority Encoder</li>
+</ul>
+</td>
+</tr>
+
 <tr valign="top">
 <td align="center">03-May-2020</td>
 <td align="center">v1.0.0</td>

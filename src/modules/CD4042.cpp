@@ -90,8 +90,8 @@ struct CD4042 : Module {
 	void process(const ProcessArgs &args) override {
 
 		// process polarity function
-		bool polarity = clockInput.process(inputs[CLOCK_INPUT].getVoltage());
-		bool clock = polarityInput.process(inputs[POLARITY_INPUT].getVoltage());
+		bool clock = clockInput.process(inputs[CLOCK_INPUT].getVoltage());
+		bool polarity = polarityInput.process(inputs[POLARITY_INPUT].getVoltage());
 		
 		bool latch = (polarity != clock);
 		
