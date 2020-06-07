@@ -26,13 +26,15 @@
 <td>
 <ul>New Modules:
 <li>CD4010 Hex Buffer</li>
-<li>CD4015 Dual 4-Stage Static Shift Register</i>
+<li>CD4015 Dual 4-Stage Static Shift Register</li>
 <li>CD4017 Decade Counter/Divider</li>
 <li>CD4022 Octal Counter/Divider</li>
 <li>CD4023 Triple 3 Input NAND Gate</li>
 <li>CD4025 Triple 3 Input NOR Gate</li>
 <li>CD4031 64 Stage Static Shift Register</li>
 <li>CD4041 Quad True/Complement Buffer</li>
+<li>CD4073 Triple 3 Input AND Gate</li>
+<li>CD4075 Triple 3 Input OR Gate</li>
 <li>CD4532 8-Bit Priority Encoder</li>
 </ul>
 </td>

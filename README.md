@@ -42,7 +42,7 @@ Follow Count Modula on facebook:
 <li>CD4001 Quad 2-Input NOR Gate</li>
 <li>CD4002 Dual 4-Input NOR Gate</li>
 <li>CD4010 Hex Buffer</li>
-<li>CD4011 Quad 2-Input NAND Gate</li>s
+<li>CD4011 Quad 2-Input NAND Gate</li>
 <li>CD4012 Dual 4-Input NAND Gate</li>
 <li>CD4015 Dual 4-Stage Static Shift Register</i>
 <li>CD4017 Decade Counter/Divider</li>
