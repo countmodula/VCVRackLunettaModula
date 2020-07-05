@@ -14,6 +14,7 @@ extern Plugin *pluginInstance;
 
 
 #include "components/LunettaModulaComponents.hpp"
+#include "components/LunettaModulaPushButtons.hpp"
 #include "components/StdComponentPositions.hpp"
 
 

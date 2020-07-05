@@ -19,6 +19,13 @@
 <th align="left">Notes</th>
 </tr>
 
+<tr valign="top">
+<td align="center">05-Jul-2020</td>
+<td align="center">v1.1.1</td>
+<td>
+Convert all push buttons to LED buttons
+</td>
+</tr>
 
 <tr valign="top">
 <td align="center">07-Jun-2020</td>

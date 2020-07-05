@@ -27,6 +27,7 @@ struct Buttons : Module {
 	enum LightIds {
 		ENUMS(Q_LIGHTS, NUM_GATES),
 		ENUMS(MOM_LIGHTS, NUM_GATES),
+		ENUMS(BTN_PARAM_LIGHTS, NUM_GATES),
 		NUM_LIGHTS
 	};
 	
@@ -141,7 +142,7 @@ struct ButtonsWidget : ModuleWidget {
 		for (int g = 0; g < NUM_GATES; g++) {
 		
 			// buttons
-			addParam(createParamCentered<LunettaModulaPBSwitchMomentaryUnlit>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_ROWS6[STD_ROW1 + g]), module, Buttons::BTN_PARAMS + g));
+			addParam(createParamCentered<LunettaModulaLEDPushButtonMomentary<LunettaModulaPBLight<RedLight>>>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_ROWS6[STD_ROW1 + g]), module, Buttons::BTN_PARAMS + g, Buttons::BTN_PARAM_LIGHTS + g));
 			
 			// Q output
 			addOutput(createOutputCentered<LunettaModulaLogicOutputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS6[STD_ROW1 + g]), module, Buttons::Q_OUTPUTS + g));
