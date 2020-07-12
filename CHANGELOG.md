@@ -20,7 +20,7 @@
 </tr>
 
 <tr valign="top">
-<td align="center">05-Jul-2020</td>
+<td align="center">12-Jul-2020</td>
 <td align="center">v1.1.1</td>
 <ul>
 <b>Module Updates:</b>
