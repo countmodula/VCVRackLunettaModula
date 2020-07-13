@@ -22,10 +22,12 @@
 <tr valign="top">
 <td align="center">12-Jul-2020</td>
 <td align="center">v1.1.1</td>
+<td>
 <ul>
 <b>Module Updates:</b>
 <li>Convert all push buttons LED buttons</li>
 </ul>
+</td>
 </tr>
 
 <tr valign="top">
