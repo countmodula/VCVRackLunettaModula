@@ -28,7 +28,7 @@ Follow Count Modula on facebook:
 <p>&nbsp</p>
 <a href="https://www.facebook.com/CountModula/"><img src="./img/facebook.png" alt="Count Modula on facebook"></a>
 
-<h3>Module List - Version 1.1.1</h3>
+<h3>Module List - Version 1.2.0</h3>
 <p>
 <a href="CHANGELOG.md">Change Log</a>
 </p>
@@ -41,17 +41,21 @@ Follow Count Modula on facebook:
 <li>CD4000 Dual 3-Input NOR Gate plus Inverter</li>
 <li>CD4001 Quad 2-Input NOR Gate</li>
 <li>CD4002 Dual 4-Input NOR Gate</li>
+<li>CD4008 4-Bit Full Adder With Parallel Carry Out</li>
 <li>CD4010 Hex Buffer</li>
 <li>CD4011 Quad 2-Input NAND Gate</li>
 <li>CD4012 Dual 4-Input NAND Gate</li>
 <li>CD4015 Dual 4-Stage Static Shift Register</i>
 <li>CD4017 Decade Counter/Divider</li>
 <li>CD4019 Quad AND-OR Select Gate</li>
+<li>CD4020 14-Stage Ripple-Carry Binary Counter/Divider</li>
 <li>CD4022 Octal Counter/Divider</li>
 <li>CD4023 Triple 3 Input NAND Gate</li>
+<li>CD4024 7-Stage Ripple-Carry Binary Counter/Divider</li>
 <li>CD4025 Triple 3 Input NOR Gate</li>
 <li>CD4030 Quad 2-Input XOR Gate</li>
 <li>CD4031 64 Stage Static Shift Register</li>
+<li>CD4040 12-Stage Ripple-Carry Binary Counter/Divider</li>
 <li>CD4041 Quad True/Complement Buffer</li>
 <li>CD4042 Quad Clocked "D" Latch</i>
 <li>CD4048 Multifunction Expandable 8-Input Gate</li>
@@ -67,6 +71,9 @@ Follow Count Modula on facebook:
 <li>CD4081 Quad 2-Input AND Gate</li>
 <li>CD4082 Dual 4-Input AND Gate</li>
 <li>CD4086 Expandable 4-Wide 2-Input AND-OR-INVERT Gate</li>
+<li>CD40106 Hex Schmitt-Trigger Inverter</li>
 <li>CD4532 8-Bit Priority Encoder</li>
+<li>CD4562 128 Stage Static Shift Register</li>
+<li>CD40106 Hex Schmitt-Trigger Inverter</li>
 <li>MC14530 Dual 5 Input Majority Gate</li>
 </ul>

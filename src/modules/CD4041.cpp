@@ -39,6 +39,7 @@ struct CD4041 : Module {
 	
 	CD4041() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		setIOMode(VCVRACK_STANDARD);
 	}
 	
 	void onReset() override {

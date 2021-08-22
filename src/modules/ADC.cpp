@@ -39,6 +39,8 @@ struct ADC : Module {
 		configParam(BITS_PARAM, 2.0f, 8.0f, 8.0f, "Bits");
 		configParam(LEVEL_PARAM, 0.0f, 1.0f, 1.0f, "Input level", " ", 0.0f, 10.0f, 0.0f );
 		configParam(REFERENCE_PARAM, 1.0f, 10.0f, 10.0f, "Reference voltage", " Volts");
+		
+		setIOMode(VCVRACK_STANDARD);
 	}
 	
 	void onReset() override {

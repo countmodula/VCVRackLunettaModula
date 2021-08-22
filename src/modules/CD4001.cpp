@@ -38,6 +38,7 @@ struct CD4001 : Module {
 	
 	CD4001() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		setIOMode(VCVRACK_STANDARD);
 	}
 	
 	void onReset() override {

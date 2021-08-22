@@ -44,6 +44,7 @@ struct CD4086 : Module {
 	
 	CD4086() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		setIOMode(VCVRACK_STANDARD);
 	}
 	
 	void onReset() override {

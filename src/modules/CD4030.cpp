@@ -35,9 +35,11 @@ struct CD4030 : Module {
 	
 	CMOSInput aInputs[NUM_GATES];
 	CMOSInput bInputs[NUM_GATES];
+	bool prevQ[4] = {};
 	
 	CD4030() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		setIOMode(VCVRACK_STANDARD);
 	}
 	
 	void onReset() override {
@@ -65,7 +67,7 @@ struct CD4030 : Module {
 		json_object_set_new(root, "moduleVersion", json_integer(1));
 		
 		// add the I/O mode details
-		#include "../modes/dataToJson.hpp"		
+		#include "../modes/dataToJson.hpp"
 
 		return root;
 	}
@@ -77,13 +79,23 @@ struct CD4030 : Module {
 	}	
 
 	void process(const ProcessArgs &args) override {
-		
+
 		for (int g = 0; g < NUM_GATES; g++) {
 			bool a = aInputs[g].process(inputs[A_INPUTS + g].getVoltage());
-			bool q = (a == bInputs[g].process(inputs[B_INPUTS + g].getVoltage()));
+			bool q = (a != bInputs[g].process(inputs[B_INPUTS + g].getVoltage()));
 
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-			lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			if (q != prevQ[g]) {
+				 prevQ[g] = q;
+
+				if(q) {
+					outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
+					lights[Q_LIGHTS + g].setBrightness(1.0f);
+				}
+				else{
+					outputs[Q_OUTPUTS + g].setVoltage(0.0f);
+					lights[Q_LIGHTS + g].setBrightness(0.0f);
+				}
+			}
 		}		
 	}
 };

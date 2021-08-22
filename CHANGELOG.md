@@ -20,6 +20,30 @@
 </tr>
 
 <tr valign="top">
+<td align="center">22-Aug-2021</td>
+<td align="center">v1.2.0</td>
+<ul>New Modules:
+<li>CD4008 4-Bit Full Adder With Parallel Carry Out</li>
+<li>CD4020 14-Stage Ripple-Carry Binary Counter/Divider</li>
+<li>CD4024 7-Stage Ripple-Carry Binary Counter/Divider</li>
+<li>CD4040 12-Stage Ripple-Carry Binary Counter/Divider</li>
+<li>CD4562 128 Stage Static Shift Register</li>
+<li>CD40106 Hex Schmitt-Trigger Inverter</li>
+</ul>
+
+<ul>
+<b>Bug Fixes:</b>
+<li>#5 Inverse operation of CD40303/CD4077</li>
+<li>#6 Logic inputs not triggering at correct levels</li>
+</ul>
+
+<ul>
+<b>Module Updates:</b>
+<li>Performance enhancements to various modules</li>
+</ul>
+</tr>
+
+<tr valign="top">
 <td align="center">12-Jul-2020</td>
 <td align="center">v1.1.1</td>
 <td>

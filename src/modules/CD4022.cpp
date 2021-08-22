@@ -42,9 +42,12 @@ struct CD4022 : Module {
 	CMOSInput resetInput;
 	
 	int count = 0;
+	int prevCount = -1;
 	
 	CD4022() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		setIOMode(VCVRACK_STANDARD);
+		prevCount = -1;
 	}
 	
 	void onReset() override {
@@ -53,6 +56,7 @@ struct CD4022 : Module {
 		resetInput.reset();
 		
 		count = 0;
+		prevCount = -1;
 	}
 
 	void setIOMode (int mode) {
@@ -100,20 +104,24 @@ struct CD4022 : Module {
 		}
 		
 		// decode the outputs
-		for (int i = 0; i < MAX_COUNT; i++) {
-			bool q = (i == count);
-			outputs[DECODED_OUTPUTS + i].setVoltage(boolToGate(q));
-			lights[DECODED_LIGHTS + i].setBrightness(boolToLight(q));
+		if (count != prevCount) {
+			for (int i = 0; i < MAX_COUNT; i++) {
+				bool q = (i == count);
+				outputs[DECODED_OUTPUTS + i].setVoltage(boolToGate(q));
+				lights[DECODED_LIGHTS + i].setBrightness(boolToLight(q));
+			}
+			
+			if(count < CARRY_COUNT) {
+				outputs[CARRY_OUTPUT].setVoltage(gateVoltage);
+				lights[CARRY_LIGHT].setBrightness(1.0f);
+			}
+			else {
+				outputs[CARRY_OUTPUT].setVoltage(0.0f);
+				lights[CARRY_LIGHT].setBrightness(0.0f);
+			}		
 		}
 		
-		if(count < CARRY_COUNT) {
-			outputs[CARRY_OUTPUT].setVoltage(gateVoltage);
-			lights[CARRY_LIGHT].setBrightness(1.0f);
-		}
-		else {
-			outputs[CARRY_OUTPUT].setVoltage(0.0f);
-			lights[CARRY_LIGHT].setBrightness(0.0f);
-		}		
+		prevCount = count;
 	}
 };
 

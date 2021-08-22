@@ -52,6 +52,7 @@ struct CD4031 : Module {
 	
 	CD4031() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		setIOMode(VCVRACK_STANDARD);
 	}
 	
 	void onReset() override {
@@ -83,7 +84,7 @@ struct CD4031 : Module {
 		json_object_set_new(root, "moduleVersion", json_integer(1));
 		
 		// add the I/O mode details
-		#include "../modes/dataToJson.hpp"		
+		#include "../modes/dataToJson.hpp"
 
 		return root;
 	}
@@ -107,7 +108,7 @@ struct CD4031 : Module {
 			lights[MODE_DATA_LIGHT].setBrightness(0.0f);
 			lights[MODE_RECIRC_LIGHT].setBrightness(1.0f);
 		}
-		else { 
+		else {
 			data = dataInput.process(inputs[DATA_INPUT].getVoltage());
 
 			lights[MODE_DATA_LIGHT].setBrightness(1.0f);

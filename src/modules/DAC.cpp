@@ -42,6 +42,8 @@ struct DAC : Module {
 		configParam(BITS_PARAM, 2.0f, 8.0f, 8.0f, "Bits");
 		configParam(SCALE_PARAM, 0.0f, 10.0f, 10.0f, "Output scale", " Volts");
 		configParam(OFFSET_PARAM, -5.0f, 5.0f, 0.0f, "Output offset", " Volts");
+
+		setIOMode(VCVRACK_STANDARD);
 	}
 	
 	void onReset() override {

@@ -27,6 +27,11 @@ class CMOSInput {
 
 		void setMode(int mode) {
 			switch(mode) {
+				case CD40106_SCHMITT:
+					vLow = Vdd  * 0.38f; // approx 4.6V for Vdd = 12V
+					vHigh = Vdd  * 0.58f; // approx 7V for Vdd = 12V
+					inputMode = mode;
+					break;
 				case CMOS_NON_SCHMITT:
 				case CMOS_SCHMITT:
 					vLow = Vdd  * 0.3f;
