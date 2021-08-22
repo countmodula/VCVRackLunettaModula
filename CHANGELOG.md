@@ -33,7 +33,7 @@
 
 <ul>
 <b>Bug Fixes:</b>
-<li>#5 Inverse operation of CD40303/CD4077</li>
+<li>#5 Inverse operation of CD4030/CD4077</li>
 <li>#6 Logic inputs not triggering at correct levels</li>
 </ul>
 
