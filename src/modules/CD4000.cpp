@@ -42,6 +42,9 @@ struct CD4000 : Module {
 	CMOSInput cInputs[NUM_GATES];
 	CMOSInput gInput;
 	
+	bool prevQ[NUM_GATES] = {};
+	bool prevInv = false;
+	
 	CD4000() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
@@ -92,18 +95,27 @@ struct CD4000 : Module {
 		
 		// process gates
 		for (int g = 0; g < NUM_GATES; g++) {
-			bool q = aInputs[g].process(inputs[A_INPUTS + g].getVoltage());
-			q |= bInputs[g].process(inputs[B_INPUTS + g].getVoltage()); 
-			q |= cInputs[g].process(inputs[C_INPUTS + g].getVoltage());
+			// OR operation
+			bool q = !(aInputs[g].process(inputs[A_INPUTS + g].getVoltage())
+						|| bInputs[g].process(inputs[B_INPUTS + g].getVoltage())
+						|| cInputs[g].process(inputs[C_INPUTS + g].getVoltage()));
 
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGateInverted(q));
-			lights[Q_LIGHTS + g].setBrightness(boolToLightInverted(q));
+			if (q != prevQ[g]) {
+				prevQ[g] = q;
+
+				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
+				lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			}
 		}		
 		
 		// inverter
-		bool inv = gInput.process(inputs[G_INPUT].getVoltage());
-		outputs[L_OUTPUT].setVoltage(boolToGateInverted(inv));
-		lights[L_LIGHT].setBrightness(boolToLightInverted(inv));
+		bool inv = !gInput.process(inputs[G_INPUT].getVoltage());
+		if (inv != prevInv) {
+			prevInv = inv;
+
+			outputs[L_OUTPUT].setVoltage(boolToGate(inv));
+			lights[L_LIGHT].setBrightness(boolToLight(inv));
+		}
 	}
 };
 

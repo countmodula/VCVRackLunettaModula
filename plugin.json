@@ -79,7 +79,7 @@
 		},
 		{
 		  "slug": "CD4012",
-		  "name": "CD4002 Dual 4-Input NAND Gate",
+		  "name": "CD4012 Dual 4-Input NAND Gate",
 		  "description": "Dual 4-Input NAND Gate",
 		  "tags": [
 			"Logic"

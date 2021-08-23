@@ -35,6 +35,17 @@ struct DAC : Module {
 	
 	CMOSInput digitalInputs[8];
 	
+	int prevDigitalValue = -1;
+	int bits = 8, prevBits = 2;
+	float vRef = 10.0f, prevVRef = 0.0f;
+	float offset = 0.0f, prevOffset = 0.0f;
+	
+	int processCount = 8;
+	
+	const int bitmap[8] = { 1, 2, 4, 8, 16, 32, 64, 128 };
+
+	// table of full scale bits
+	const float maxBits[9] = {0, 0, 3, 7, 15, 31, 63, 127, 255};
 	
 	DAC() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -77,34 +88,48 @@ struct DAC : Module {
 		#include "../modes/dataFromJson.hpp"
 	}	
 
-	// table of full scale bits
-	float maxBits[9] = {0, 0, 3, 7, 15, 31, 63, 127, 255};
-
 	void process(const ProcessArgs &args) override {
 
-		// determine bit depth and bit voltage to use
-		int bits = clamp((int)(params[BITS_PARAM].getValue()), 2, 8);
-		float vRef = clamp(params[SCALE_PARAM].getValue(), 0.0f, 10.0f);
-		float bitSize = vRef / maxBits[bits];
-		
-		// process the input bits
-		float analogeValue = 0.0f;
-		float displayValue = 0.0f;
- 	
-		if (vRef > 0.0f) {
-			int x = 0x01;
-			for (int b = 0; b < bits; b++) {
-				if (digitalInputs[b].process(inputs[DIGITAL_INPUTS + b].getVoltage()))
-					analogeValue += (bitSize * (float)x);
+		// determine bit depth and bit voltage to use - no need to do this at audio rate
+		if (++processCount > 8) {
+			bits = clamp((int)(params[BITS_PARAM].getValue()), 2, 8);
+			vRef = clamp(params[SCALE_PARAM].getValue(), 0.0f, 10.0f);
+			offset = params[OFFSET_PARAM].getValue();
+			
+			// force update of out put on change of parameter
+			if (prevBits != bits || vRef != prevVRef || offset != prevOffset) {
+				prevDigitalValue = -1;
 				
-				x = x << 1;
+				prevOffset = offset;
+				prevVRef = vRef;
+				prevBits = bits;
 			}
-
-			displayValue = analogeValue / vRef;
 		}
 		
-		outputs[ANALOGUE_OUPUT].setVoltage(clamp(analogeValue + params[OFFSET_PARAM].getValue(), 0.0f, 12.0f));
-		lights[ANALOGUE_LIGHT].setBrightness(displayValue);
+		// process the input bits
+		if (vRef > 0.0f) {
+			int digitalValue = 0;
+			for (int b = 0; b < bits; b++) {
+				if (digitalInputs[b].process(inputs[DIGITAL_INPUTS + b].getVoltage()))
+					digitalValue += bitmap[b];
+			}
+			
+			if (digitalValue != prevDigitalValue) {
+				prevDigitalValue = digitalValue;
+
+				float analogeValue = (vRef / maxBits[bits] * (float)digitalValue);
+				float displayValue = analogeValue / vRef;
+				
+				outputs[ANALOGUE_OUPUT].setVoltage(clamp(analogeValue + offset, 0.0f, 12.0f));
+				lights[ANALOGUE_LIGHT].setBrightness(displayValue);
+			}
+		}
+		else {
+			if (processCount == 0) {
+				outputs[ANALOGUE_OUPUT].setVoltage(0.0f);
+				lights[ANALOGUE_LIGHT].setBrightness(0.0f);
+			}
+		}
 	}
 };
 

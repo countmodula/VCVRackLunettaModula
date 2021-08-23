@@ -41,6 +41,9 @@ struct CD4019 : Module {
 	CMOSInput kaInput;
 	CMOSInput kbInput;
 	
+	bool prevQ[NUM_GATES] = {};
+	int prevSelect = -1;
+	
 	CD4019() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
@@ -115,15 +118,23 @@ struct CD4019 : Module {
 					break;
 			}
 
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-			lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			if (q != prevQ[g]) {
+				prevQ[g] = q;
+				
+				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
+				lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			}
 		}
 
 		// show status
-		int j = 1;
-		for (int i = 0; i < 3; i++)
-			lights[STATUS_LIGHTS + i].setBrightness(boolToLight(j++ == select));
-
+		if (select != prevSelect) {
+			int j = 1;
+			
+			prevSelect = select;
+			
+			for (int i = 0; i < 3; i++)
+				lights[STATUS_LIGHTS + i].setBrightness(boolToLight(j++ == select));
+		}
 	}
 };
 

@@ -35,6 +35,7 @@ struct CD4001 : Module {
 	
 	CMOSInput aInputs[NUM_GATES];
 	CMOSInput bInputs[NUM_GATES];
+	bool prevQ[NUM_GATES] = {};
 	
 	CD4001() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -80,12 +81,17 @@ struct CD4001 : Module {
 	void process(const ProcessArgs &args) override {
 		
 		for (int g = 0; g < NUM_GATES; g++) {
-			bool q = aInputs[g].process(inputs[A_INPUTS + g].getVoltage());
-			q |= bInputs[g].process(inputs[B_INPUTS + g].getVoltage());
 
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGateInverted(q));
-			lights[Q_LIGHTS + g].setBrightness(boolToLightInverted(q));
-		}		
+			bool q = !(aInputs[g].process(inputs[A_INPUTS + g].getVoltage())
+						|| bInputs[g].process(inputs[B_INPUTS + g].getVoltage()));
+
+			if (q != prevQ[g]) {
+				prevQ[g] = q;
+				
+				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
+				lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			}
+		}
 	}
 };
 

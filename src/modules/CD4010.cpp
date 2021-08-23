@@ -35,7 +35,7 @@ struct CD4010 : Module {
 	CMOSInput iInputs[NUM_GATES];
 	
 	bool delay[NUM_GATES][2] = {};
-	
+	bool prevQ = false;
 	
 	CD4010() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -85,8 +85,12 @@ struct CD4010 : Module {
 			delay[g][1] = delay[g][0];
 			delay[g][0] = iInputs[g].process(inputs[I_INPUTS + g].getVoltage());
 		
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-			lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			if (q != prevQ) {
+				prevQ = q;
+				
+				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
+				lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			}
 		}	
 	}
 };

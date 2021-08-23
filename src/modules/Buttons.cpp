@@ -38,6 +38,7 @@ struct Buttons : Module {
 	bool buttonValue[NUM_GATES] = {};
 	
 	bool outValue[NUM_GATES] = {};
+	int processCount = 8;
 	
 	Buttons() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -50,6 +51,8 @@ struct Buttons : Module {
 		
 		for(int i = 0; i < NUM_GATES; i++)
 			buttonValue[i] = outValue[i] = latched[i] = false;
+			
+		processCount = 8;
 	}
 	
 	void setIOMode (int mode) {
@@ -106,27 +109,31 @@ struct Buttons : Module {
 	void process(const ProcessArgs &args) override {
 		
 		// process buttons
-		for (int g = 0; g < NUM_GATES; g++) {
-			bool q = params[BTN_PARAMS + g].getValue() > 0.5f;
+		if (++processCount > 8) {
+			processCount = 0;
 			
-			if (latched[g]) {
-				// we toggle the outputs on click in latched mode
-				if (q && !buttonValue[g])
-					outValue[g] = !outValue[g];
-			}
-			else {
-				// output follows the button press in momentary mode
-				outValue[g] = q;
-			}
-		
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGate(outValue[g]));
-			lights[Q_LIGHTS + g].setBrightness(boolToLight(outValue[g]));
+			for (int g = 0; g < NUM_GATES; g++) {
+				bool q = params[BTN_PARAMS + g].getValue() > 0.5f;
+				
+				if (latched[g]) {
+					// we toggle the outputs on click in latched mode
+					if (q && !buttonValue[g])
+						outValue[g] = !outValue[g];
+				}
+				else {
+					// output follows the button press in momentary mode
+					outValue[g] = q;
+				}
+			
+				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(outValue[g]));
+				lights[Q_LIGHTS + g].setBrightness(boolToLight(outValue[g]));
 
-			lights[MOM_LIGHTS + g].setBrightness(boolToLight(latched[g]));
-			
-			// for identification of the button click
-			buttonValue[g] = q;
-		}	
+				lights[MOM_LIGHTS + g].setBrightness(boolToLight(latched[g]));
+				
+				// for identification of the button click
+				buttonValue[g] = q;
+			}
+		}
 	}
 };
 

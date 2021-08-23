@@ -32,6 +32,8 @@ struct ADC : Module {
 	
 	// add the variables we'll use when managing modes
 	#include "../modes/modeVariables.hpp"
+	int prevValue = 0;
+	
 	
 	ADC() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -89,19 +91,23 @@ struct ADC : Module {
 		int digitalValue = (int)(maxBits[bits] * (vIn/vRef));
 
 		// now set the outputs/lights accordingly
-		int x = 0x01;
-		for (int b = 0; b < 8; b++) {
-			if (b < bits) {
-				bool q = (x == (digitalValue & x));
-				outputs[BIT_OUTPUTS + b].setVoltage(boolToGate(q));
-				lights[BIT_LIGHTS + b].setBrightness(boolToLight(q));
-				x = x << 1;
+		if(prevValue != digitalValue) {
+			prevValue = digitalValue;
+			
+			int x = 0x01;
+			for (int b = 0; b < 8; b++) {
+				if (b < bits) {
+					bool q = (x == (digitalValue & x));
+					outputs[BIT_OUTPUTS + b].setVoltage(boolToGate(q));
+					lights[BIT_LIGHTS + b].setBrightness(boolToLight(q));
+					x = x << 1;
+				}
+				else {
+					outputs[BIT_OUTPUTS + b].setVoltage(0.0f);
+					lights[BIT_LIGHTS + b].setBrightness(0.0f);
+				}
 			}
-			else {
-				outputs[BIT_OUTPUTS + b].setVoltage(0.0f);
-				lights[BIT_LIGHTS + b].setBrightness(0.0f);
-			}
-		}	
+		}
 	}
 };
 

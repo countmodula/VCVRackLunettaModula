@@ -38,10 +38,9 @@ struct CD4015 : Module {
 		bool bits[4] = {};
 		
 		void process(bool newValue) {
-			
-			for (int i = 3; i > 0 ; i--)
-				bits[i] = bits[i-1];
-			
+			bits[3] = bits[2];
+			bits[2] = bits[1];
+			bits[1] = bits[0];
 			bits[0] = newValue;
 		}
 		
@@ -60,6 +59,7 @@ struct CD4015 : Module {
 	
 	TappedShiftRegister shiftReg[NUM_INPUTS];
 	
+	bool prevQ[NUM_GATES][4] = {};
 	
 	CD4015() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -109,12 +109,15 @@ struct CD4015 : Module {
 	void process(const ProcessArgs &args) override {
 	
 		int qOffset = 0;
+		
 		for (int g = 0; g < NUM_GATES; g++) {
+			bool update = false;
 
 			// process the current shift register
 			if (resetInputs[g].process(inputs[RESET_INPUTS + g].getVoltage())) {
 				// reset holds all outputs low
 				shiftReg[g].reset();
+				update = true;
 			}
 			else {
 				// process clock
@@ -124,14 +127,23 @@ struct CD4015 : Module {
 				// leading clock edge shifts the data and insert the new data
 				if (clock & !prevClock) {
 					shiftReg[g].process(dataInputs[g].process(inputs[DATA_INPUTS + g].getVoltage()));
+					update = true;
 				}
 			}
 			
 			// process the outputs
-			for (int i = 0; i < 4; i++) {
-				bool q = shiftReg[g].bits[i];
-				outputs[Q_OUTPUTS + qOffset + i].setVoltage(boolToGate(q));
-				lights[Q_LIGHTS + qOffset + i].setBrightness(boolToLight(q));
+			if (update) {
+				update = false;
+					
+				for (int i = 0; i < 4; i++) {
+					bool q = shiftReg[g].bits[i];
+					if (q != prevQ[g][i]) {
+						prevQ[g][i] = q;
+						
+						outputs[Q_OUTPUTS + qOffset + i].setVoltage(boolToGate(q));
+						lights[Q_LIGHTS + qOffset + i].setBrightness(boolToLight(q));
+					}
+				}
 			}
 			
 			qOffset += 4;
