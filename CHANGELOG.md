@@ -22,6 +22,7 @@
 <tr valign="top">
 <td align="center">22-Aug-2021</td>
 <td align="center">v1.2.0</td>
+<td>
 <ul>New Modules:
 <li>CD4008 4-Bit Full Adder With Parallel Carry Out</li>
 <li>CD4020 14-Stage Ripple-Carry Binary Counter/Divider</li>
