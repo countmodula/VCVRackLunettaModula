@@ -23,7 +23,8 @@
 <td align="center">22-Aug-2021</td>
 <td align="center">v1.2.0</td>
 <td>
-<ul>New Modules:
+<ul>
+<b>New Modules:</b>
 <li>CD4008 4-Bit Full Adder With Parallel Carry Out</li>
 <li>CD4020 14-Stage Ripple-Carry Binary Counter/Divider</li>
 <li>CD4024 7-Stage Ripple-Carry Binary Counter/Divider</li>
@@ -59,7 +60,8 @@
 <td align="center">07-Jun-2020</td>
 <td align="center">v1.1.0</td>
 <td>
-<ul>New Modules:
+<ul>
+<b>New Modules:</b>
 <li>CD4010 Hex Buffer</li>
 <li>CD4015 Dual 4-Stage Static Shift Register</li>
 <li>CD4017 Decade Counter/Divider</li>
