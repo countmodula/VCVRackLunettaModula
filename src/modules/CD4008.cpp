@@ -40,9 +40,6 @@ struct CD4008 : Module {
 	CMOSInput bInputs[NUM_GATES];
 	CMOSInput carryInput;
 
-	bool prevQ[NUM_GATES] = {};
-	bool prevCarry = false;
-	
 	const bool sumMap[8] = { false, true, true, false, true, false, false , true };
 	const bool carryMap[8] = {false, false, false, true, false, true, true, true };
 
@@ -55,7 +52,6 @@ struct CD4008 : Module {
 		for (int g = 0; g < NUM_GATES; g++) {
 			aInputs[g].reset();
 			bInputs[g].reset();
-			prevQ[g] = false;
 		}
 		
 		carryInput.reset();
@@ -105,21 +101,25 @@ struct CD4008 : Module {
 			// process the addition for this bit using truth tables
 			bool q = sumMap[i];
 			carry = carryMap [i];
-
-			if (q != prevQ[g]) {
-				prevQ[g] = q;
-				
-				outputs[SUM_OUTPUTS + g].setVoltage(boolToGate(q));
-				lights[SUM_LIGHTS + g].setBrightness(boolToLight(q));
+			
+			if (q) {
+				outputs[SUM_OUTPUTS + g].setVoltage(gateVoltage);
+				lights[SUM_LIGHTS + g].setBrightness(1.0f);
+			}
+			else {
+				outputs[SUM_OUTPUTS + g].setVoltage(0.0f);
+				lights[SUM_LIGHTS + g].setBrightness(0.0f);
 			}
 		}
 		
 		// process carry out
-		if (carry != prevCarry) {
-			prevCarry = carry;
-			
-			outputs[CARRY_OUTPUT].setVoltage(boolToGate(carry));
-			lights[CO_LIGHT].setBrightness(boolToLight(carry));
+		if (carry) {
+			outputs[CARRY_OUTPUT].setVoltage(gateVoltage);
+			lights[CO_LIGHT].setBrightness(1.0f);
+		}
+		else {
+			outputs[CARRY_OUTPUT].setVoltage(0.0f);
+			lights[CO_LIGHT].setBrightness(0.0f);
 		}
 	}
 };

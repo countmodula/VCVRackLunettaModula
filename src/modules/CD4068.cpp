@@ -81,10 +81,20 @@ struct CD4068 : Module {
 			q &= aInputs[i].process(inputs[A_INPUTS + i].getVoltage());
 		}		
 
-		outputs[J_OUTPUT].setVoltage(boolToGateInverted(q));
-		outputs[K_OUTPUT].setVoltage(boolToGate(q));
-		lights[J_LIGHT].setBrightness(boolToLightInverted(q));
-		lights[K_LIGHT].setBrightness(boolToLight(q));
+		if (q) {
+			outputs[J_OUTPUT].setVoltage(0.0f);
+			lights[J_LIGHT].setBrightness(0.0f);
+			
+			outputs[K_OUTPUT].setVoltage(gateVoltage);
+			lights[K_LIGHT].setBrightness(1.0f);
+		}
+		else {
+			outputs[J_OUTPUT].setVoltage(gateVoltage);
+			lights[J_LIGHT].setBrightness(1.0f);
+			
+			outputs[K_OUTPUT].setVoltage(0.0f);
+			lights[K_LIGHT].setBrightness(0.0f);
+		}
 
 	}
 };

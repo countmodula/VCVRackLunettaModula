@@ -118,22 +118,53 @@ struct CD4063 : Module {
 			bool eqIn = gtInput.process(inputs[EQ_INPUT].getNormalVoltage(gateVoltage));
 			bool gtIn = gtInput.process(inputs[GT_INPUT].getVoltage());
 
-			outputs[LT_OUTPUT].setVoltage(boolToGate(ltIn));
-			outputs[EQ_OUTPUT].setVoltage(boolToGate(eqIn));
-			outputs[GT_OUTPUT].setVoltage(boolToGate(gtIn));
-			lights[LT_LIGHT].setBrightness(boolToLight(ltIn));
-			lights[EQ_LIGHT].setBrightness(boolToLight(eqIn));
-			lights[GT_LIGHT].setBrightness(boolToLight(gtIn));
+			if (ltIn) {
+				outputs[LT_OUTPUT].setVoltage(gateVoltage);
+				lights[LT_LIGHT].setBrightness(1.0f);
+			}
+			else {
+				outputs[LT_OUTPUT].setVoltage(0.0f);
+				lights[LT_LIGHT].setBrightness(0.0f);
+			}
+			
+			if (eqIn) {
+				outputs[EQ_OUTPUT].setVoltage(gateVoltage);
+				lights[EQ_LIGHT].setBrightness(1.0f);
+			}
+			else {
+				outputs[EQ_OUTPUT].setVoltage(0.0f);
+				lights[EQ_LIGHT].setBrightness(0.0f);
+			}
+			
+			if (gtIn) {
+				outputs[GT_OUTPUT].setVoltage(gateVoltage);
+				lights[GT_LIGHT].setBrightness(1.0f);
+			}
+			else {
+				outputs[GT_OUTPUT].setVoltage(0.0f);
+				lights[GT_LIGHT].setBrightness(0.0f);
+			}
 		}
 		else {
 			// not equal, process lt/gt
 			bool lt = (a < b);
-			outputs[LT_OUTPUT].setVoltage(boolToGate(lt));
+			if (lt) {
+				outputs[LT_OUTPUT].setVoltage(gateVoltage);
+				lights[LT_LIGHT].setBrightness(1.0f);
+				
+				outputs[GT_OUTPUT].setVoltage(0.0f);
+				lights[GT_LIGHT].setBrightness(0.0f);
+			}
+			else {
+				outputs[LT_OUTPUT].setVoltage(0.0f);
+				lights[LT_LIGHT].setBrightness(0.0f);
+				
+				outputs[GT_OUTPUT].setVoltage(gateVoltage);
+				lights[GT_LIGHT].setBrightness(1.0f);
+			}
+			
 			outputs[EQ_OUTPUT].setVoltage(0.0f);
-			outputs[GT_OUTPUT].setVoltage(boolToGateInverted(lt));
-			lights[LT_LIGHT].setBrightness(boolToLight(lt));
 			lights[EQ_LIGHT].setBrightness(0.0f);
-			lights[GT_LIGHT].setBrightness(boolToLightInverted(lt));
 		}
 	}
 };

@@ -57,9 +57,13 @@ struct CD4048 : Module {
 	CMOSInput kcInput;
 	CMOSInput expInput;
 	
+	int processCount = 8;
+	
 	CD4048() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
+		
+		processCount = 8;
 	}
 	
 	void onReset() override {
@@ -168,12 +172,22 @@ struct CD4048 : Module {
 				break;
 		}
 		
-		outputs[J_OUTPUT].setVoltage(boolToGate(j));
-		lights[J_LIGHT].setBrightness(boolToLight(j));
-
+		if (j) {
+			outputs[J_OUTPUT].setVoltage(gateVoltage);
+			lights[J_LIGHT].setBrightness(1.0f);
+		}
+		else {
+			outputs[J_OUTPUT].setVoltage(0.0f);
+			lights[J_LIGHT].setBrightness(0.0f);
+		}
+		
 		// show status
-		for (int i = 0; i < NUM_FUNCTIONS; i++)
-			lights[STATUS_LIGHTS + i].setBrightness(boolToLight(i == function));
+		if (++processCount > 8) {
+			processCount = 0;
+			
+			for (int i = 0; i < NUM_FUNCTIONS; i++)
+				lights[STATUS_LIGHTS + i].setBrightness(boolToLight(i == function));
+		}
 	}
 };
 

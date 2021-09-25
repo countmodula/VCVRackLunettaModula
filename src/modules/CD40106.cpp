@@ -33,7 +33,6 @@ struct CD40106 : Module {
 	#include "../modes/modeVariables.hpp"
 	
 	CMOSInput iInputs[NUM_GATES];
-	bool prevQ[NUM_GATES] = {};
 	
 	CD40106() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -44,7 +43,6 @@ struct CD40106 : Module {
 	void onReset() override {
 		for (int g = 0; g < NUM_GATES; g++) {
 			iInputs[g].reset();
-			prevQ[g] = false;
 		}
 	}
 	
@@ -75,17 +73,13 @@ struct CD40106 : Module {
 		for (int g = 0; g < NUM_GATES; g++) {
 			bool q = !iInputs[g].process(inputs[I_INPUTS + g].getVoltage());
 
-			if (q != prevQ[g]) {
-				prevQ[g] = q;
-				
-				if (q) {
-					outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
-					lights[Q_LIGHTS + g].setBrightness(1.0f);
-				}
-				else {
-					outputs[Q_OUTPUTS + g].setVoltage(0.0f);
-					lights[Q_LIGHTS + g].setBrightness(0.0f);
-				}
+			if (q) {
+				outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
+				lights[Q_LIGHTS + g].setBrightness(1.0f);
+			}
+			else {
+				outputs[Q_OUTPUTS + g].setVoltage(0.0f);
+				lights[Q_LIGHTS + g].setBrightness(0.0f);
 			}
 		}	
 	}

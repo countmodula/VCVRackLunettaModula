@@ -97,14 +97,28 @@ struct CD4042 : Module {
 		bool latch = (polarity != clock);
 		
 		// process gates
+		int in = D_INPUTS;
+		int qOut = Q_OUTPUTS;
+		int nqOut = NQ_OUTPUTS;
+		int qLed = Q_LIGHTS;
+		int nqLed = NQ_LIGHTS;
 		for (int g = 0; g < NUM_GATES; g++) {
+			bool q = qValues[g] = (latch ? qValues[g] : aInputs[g].process(inputs[in++].getVoltage()));
 			
-			bool q = qValues[g] = (latch ? qValues[g] : aInputs[g].process(inputs[D_INPUTS + g].getVoltage()));
+			if (q) {
+				outputs[qOut++].setVoltage(gateVoltage);
+				lights[qLed++].setBrightness(1.0f);
 
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-			outputs[NQ_OUTPUTS + g].setVoltage(boolToGateInverted(q));
-			lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
-			lights[NQ_LIGHTS + g].setBrightness(boolToLightInverted(q));
+				outputs[nqOut++].setVoltage(0.0f);
+				lights[nqLed++].setBrightness(0.0f);
+			}
+			else {
+				outputs[qOut++].setVoltage(0.0f);
+				lights[qLed++].setBrightness(0.0f);
+
+				outputs[nqOut++].setVoltage(gateVoltage);
+				lights[nqLed++].setBrightness(1.0f);
+			}
 		}
 	}
 };

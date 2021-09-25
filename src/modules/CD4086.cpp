@@ -42,9 +42,13 @@ struct CD4086 : Module {
 	CMOSInput inhInput;
 	CMOSInput enInput;
 	
+	int processCount = 8;
+	
 	CD4086() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
+		
+		processCount = 8;
 	}
 	
 	void onReset() override {
@@ -105,13 +109,22 @@ struct CD4086 : Module {
 		bool inhibit = inhInput.process(inputs[INH_INPUT].getVoltage());
 		bool enable = enInput.process(inputs[EN_INPUT].getNormalVoltage(gateVoltage));
 		
-		lights[INH_LIGHT].setBrightness(boolToLight(inhibit));
-		lights[EN_LIGHT].setBrightness(boolToLight(enable));
+		if (++processCount > 8) {
+			processCount++;
+			lights[INH_LIGHT].setBrightness(boolToLight(inhibit));
+			lights[EN_LIGHT].setBrightness(boolToLight(enable));
+		}
 		
 		bool j = (inhibit || !enable || q);
 		
-		outputs[J_OUTPUT].setVoltage(boolToGateInverted(j));
-		lights[J_LIGHT].setBrightness(boolToLightInverted(j));
+		if(!j) {
+			outputs[J_OUTPUT].setVoltage(gateVoltage);
+			lights[J_LIGHT].setBrightness(1.0f);
+		}
+		else {
+			outputs[J_OUTPUT].setVoltage(0.0f);
+			lights[J_LIGHT].setBrightness(0.0f);
+		}
 	}
 };
 

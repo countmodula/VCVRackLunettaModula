@@ -104,10 +104,23 @@ struct MC14530 : Module {
 		bool za = waInput.process(inputs[WA_INPUT].getNormalVoltage(gateVoltage)) == (a > 2);
 		bool zb = wbInput.process(inputs[WB_INPUT].getNormalVoltage(gateVoltage)) == (b > 2);
 	
-		outputs[ZA_OUTPUT].setVoltage(boolToGate(za));
-		outputs[ZB_OUTPUT].setVoltage(boolToGate(zb));
-		lights[ZA_LIGHT].setBrightness(boolToLight(za));
-		lights[ZB_LIGHT].setBrightness(boolToLight(zb));
+		if (za) {
+			outputs[ZA_OUTPUT].setVoltage(gateVoltage);
+			lights[ZA_LIGHT].setBrightness(1.0f);
+		}
+		else {
+			outputs[ZA_OUTPUT].setVoltage(0.0f);
+			lights[ZA_LIGHT].setBrightness(0.0f);
+		}
+
+		if (zb) {
+			outputs[ZB_OUTPUT].setVoltage(gateVoltage);
+			lights[ZB_LIGHT].setBrightness(1.0f);
+		}
+		else {
+			outputs[ZB_OUTPUT].setVoltage(0.0f);
+			lights[ZB_LIGHT].setBrightness(0.0f);
+		}
 	}
 };
 

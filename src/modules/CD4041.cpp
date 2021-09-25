@@ -78,15 +78,29 @@ struct CD4041 : Module {
 
 	void process(const ProcessArgs &args) override {
 		
+		int in = A_INPUTS;
+		int qOut = Q_OUTPUTS;
+		int nqOut = NQ_OUTPUTS;
+		int qLed = Q_LIGHTS;
+		int nqLed = NQ_LIGHTS;
 		for (int g = 0; g < NUM_GATES; g++) {
-			bool q = aInputs[g].process(inputs[A_INPUTS + g].getVoltage());
+			bool q = aInputs[g].process(inputs[in++].getVoltage());
 
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-			lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			if (q) {
+				outputs[qOut++].setVoltage(gateVoltage);
+				lights[qLed++].setBrightness(1.0f);
 
-			outputs[NQ_OUTPUTS + g].setVoltage(boolToGateInverted(q));
-			lights[NQ_LIGHTS + g].setBrightness(boolToLightInverted(q));
-		}		
+				outputs[nqOut++].setVoltage(0.0f);
+				lights[nqLed++].setBrightness(0.0f);
+			}
+			else {
+				outputs[qOut++].setVoltage(0.0f);
+				lights[qLed++].setBrightness(0.0f);
+
+				outputs[nqOut++].setVoltage(gateVoltage);
+				lights[nqLed++].setBrightness(1.0f);
+			}
+		}
 	}
 };
 

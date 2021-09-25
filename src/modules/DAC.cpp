@@ -41,6 +41,9 @@ struct DAC : Module {
 	float offset = 0.0f, prevOffset = 0.0f;
 	
 	int processCount = 8;
+	float analogeValue = 0.0f;
+	float displayValue = 0.0f;
+	
 	
 	const int bitmap[8] = { 1, 2, 4, 8, 16, 32, 64, 128 };
 
@@ -55,6 +58,10 @@ struct DAC : Module {
 		configParam(OFFSET_PARAM, -5.0f, 5.0f, 0.0f, "Output offset", " Volts");
 
 		setIOMode(VCVRACK_STANDARD);
+		
+		analogeValue = 0.0f;
+		displayValue = 0.0f;
+			
 	}
 	
 	void onReset() override {
@@ -96,7 +103,7 @@ struct DAC : Module {
 			vRef = clamp(params[SCALE_PARAM].getValue(), 0.0f, 10.0f);
 			offset = params[OFFSET_PARAM].getValue();
 			
-			// force update of out put on change of parameter
+			// force update of output on change of parameter
 			if (prevBits != bits || vRef != prevVRef || offset != prevOffset) {
 				prevDigitalValue = -1;
 				
@@ -114,15 +121,15 @@ struct DAC : Module {
 					digitalValue += bitmap[b];
 			}
 			
+
 			if (digitalValue != prevDigitalValue) {
 				prevDigitalValue = digitalValue;
-
-				float analogeValue = (vRef / maxBits[bits] * (float)digitalValue);
-				float displayValue = analogeValue / vRef;
-				
-				outputs[ANALOGUE_OUPUT].setVoltage(clamp(analogeValue + offset, 0.0f, 12.0f));
+				analogeValue = (vRef / maxBits[bits] * (float)digitalValue);
+				displayValue = analogeValue / vRef;
 				lights[ANALOGUE_LIGHT].setBrightness(displayValue);
 			}
+			
+			outputs[ANALOGUE_OUPUT].setVoltage(clamp(analogeValue + offset, 0.0f, 12.0f));
 		}
 		else {
 			if (processCount == 0) {

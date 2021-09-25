@@ -36,7 +36,6 @@ struct CD4562 : Module {
 	CMOSInput dataInput;
 	CMOSInput clockInput;
 	bool prevClock = false;
-	bool prevQ[8] = {};
 	
 	bool shiftRegister[NUM_BITS] = {};
 	unsigned int in = NUM_BITS-1;
@@ -104,22 +103,21 @@ struct CD4562 : Module {
 			for (int b = 0; b < 8; b++) {
 				if (++out[b] > NUM_BITS_LESS_1)
 					out[b] = 0;
-					
-				outputs[Q_OUTPUTS + b].setVoltage(boolToGate(shiftRegister[out[b]]));
-				lights[Q_LIGHTS + b].setBrightness(boolToLight(shiftRegister[out[b]]));
 			}
 		}
 
-		// // data outputs
-		// for (int b = 0; b < 8; b++) {
-			// if (out[b] != prevQ[b]) {
-				// prevQ[b] = out[b];
+		// data outputs
+		for (int b = 0; b < 8; b++) {
+			if (shiftRegister[out[b]]) {
+				outputs[Q_OUTPUTS + b].setVoltage(gateVoltage);
+				lights[Q_LIGHTS + b].setBrightness(1.0f);
+			}
+			else {
+				outputs[Q_OUTPUTS + b].setVoltage(0.0f);
+				lights[Q_LIGHTS + b].setBrightness(0.0f);
+			}
+		}
 
-				// outputs[Q_OUTPUTS + b].setVoltage(boolToGate(shiftRegister[out[b]]));
-				// lights[Q_LIGHTS + b].setBrightness(boolToLight(shiftRegister[out[b]]));
-			// }
-		// }
-		
 		prevClock = clock;
 	}
 };

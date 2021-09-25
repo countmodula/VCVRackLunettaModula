@@ -41,7 +41,6 @@ struct CD4019 : Module {
 	CMOSInput kaInput;
 	CMOSInput kbInput;
 	
-	bool prevQ[NUM_GATES] = {};
 	int prevSelect = -1;
 	
 	CD4019() {
@@ -98,10 +97,13 @@ struct CD4019 : Module {
 		select += (kbInput.process(inputs[KB_INPUT].getVoltage()) ? 0x02: 0x00);
 		
 		// process gates
+		int out = Q_OUTPUTS;
+		int led = Q_LIGHTS;
+		int aIn = A_INPUTS;
+		int bIn = B_INPUTS;
 		for (int g = 0; g < NUM_GATES; g++) {
-			
-			bool a = aInputs[g].process(inputs[A_INPUTS + g].getVoltage());
-			bool b = bInputs[g].process(inputs[B_INPUTS + g].getVoltage()); 
+			bool a = aInputs[g].process(inputs[aIn++].getVoltage());
+			bool b = bInputs[g].process(inputs[bIn++].getVoltage()); 
 
 			bool q = false;
 			switch (select) {
@@ -118,11 +120,13 @@ struct CD4019 : Module {
 					break;
 			}
 
-			if (q != prevQ[g]) {
-				prevQ[g] = q;
-				
-				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-				lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			if (q) {
+				outputs[out++].setVoltage(gateVoltage);
+				lights[led++].setBrightness(1.0f);
+			}
+			else {
+				outputs[out++].setVoltage(0.0f);
+				lights[led++].setBrightness(0.0f);
 			}
 		}
 

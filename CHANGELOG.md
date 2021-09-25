@@ -14,9 +14,25 @@
 &nbsp;
 <table style="width:1000px;">
 <tr valign="top">
-<th align="center" style="width:120px;">Date</th>
+<th align="center" style="width:120px;" width="120">Date</th>
 <th align="center">Release</th>
 <th align="left">Notes</th>
+</tr>
+
+<tr valign="top">
+<td align="center">25-Sep-2021</td>
+<td align="center">v1.2.2</td>
+<td>
+More minor bug fixes and performance tweaks
+</td>
+</tr>
+
+<tr valign="top">
+<td align="center">21-Sep-2021</td>
+<td align="center">v1.2.1</td>
+<td>
+Minor bug fixes and performance tweaks
+</td>
 </tr>
 
 <tr valign="top">
@@ -43,6 +59,7 @@
 <b>Module Updates:</b>
 <li>Performance enhancements to various modules</li>
 </ul>
+</td>
 </tr>
 
 <tr valign="top">

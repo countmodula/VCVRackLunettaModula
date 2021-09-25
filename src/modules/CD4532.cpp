@@ -104,14 +104,31 @@ struct CD4532 : Module {
 			for (int i = 0; i < 3; i++) {
 				bool out = groupSelect ? outputMmap[priority][i] : false;
 				
-				outputs[BIN_OUPUTS + i].setVoltage(boolToGate(out));
-				lights[BIN_LIGHTS + i].setBrightness(boolToLight(out));
+				if (out) {
+					outputs[BIN_OUPUTS + i].setVoltage(gateVoltage);
+					lights[BIN_LIGHTS + i].setBrightness(1.0f);
+				}
+				else {
+					outputs[BIN_OUPUTS + i].setVoltage(0.0f);
+					lights[BIN_LIGHTS + i].setBrightness(0.0f);
+				}
 			}
 			
-			outputs[E_OUTPUT].setVoltage(boolToGateInverted(groupSelect));
-			lights[E_LIGHT].setBrightness(boolToLightInverted(groupSelect));
-			outputs[GS_OUTPUT].setVoltage(boolToGate(groupSelect));
-			lights[GS_LIGHT].setBrightness(boolToLight(groupSelect));
+			if (groupSelect) {
+				outputs[E_OUTPUT].setVoltage(0.0f);
+				lights[E_LIGHT].setBrightness(0.0f);
+				
+				outputs[GS_OUTPUT].setVoltage(gateVoltage);
+				lights[GS_LIGHT].setBrightness(1.0f);
+			}
+			else {
+				outputs[E_OUTPUT].setVoltage(gateVoltage);
+				lights[E_LIGHT].setBrightness(1.0f);
+				
+				outputs[GS_OUTPUT].setVoltage(0.0f);
+				lights[GS_LIGHT].setBrightness(0.0f);
+			}
+			
 		}
 		else {
 			outputs[E_OUTPUT].setVoltage(0.0f);

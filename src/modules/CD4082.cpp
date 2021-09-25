@@ -89,14 +89,20 @@ struct CD4082 : Module {
 		
 		// process gates
 		for (int g = 0; g < NUM_GATES; g++) {
-			bool q = aInputs[g].process(inputs[A_INPUTS + g].getVoltage());
-			q &= bInputs[g].process(inputs[B_INPUTS + g].getVoltage());
-			q &= cInputs[g].process(inputs[C_INPUTS + g].getVoltage());
-			q &= dInputs[g].process(inputs[D_INPUTS + g].getVoltage());
+			bool q = aInputs[g].process(inputs[A_INPUTS + g].getVoltage())
+					&& bInputs[g].process(inputs[B_INPUTS + g].getVoltage())
+					&& cInputs[g].process(inputs[C_INPUTS + g].getVoltage())
+					&& dInputs[g].process(inputs[D_INPUTS + g].getVoltage());
 
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-			lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
-		}		
+			if(q) {
+				outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
+				lights[Q_LIGHTS + g].setBrightness(1.0f);
+			}
+			else{
+				outputs[Q_OUTPUTS + g].setVoltage(0.0f);
+				lights[Q_LIGHTS + g].setBrightness(0.0f);
+			}
+		}
 	}
 };
 

@@ -35,7 +35,6 @@ struct CD4030 : Module {
 	
 	CMOSInput aInputs[NUM_GATES];
 	CMOSInput bInputs[NUM_GATES];
-	bool prevQ[4] = {};
 	
 	CD4030() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -84,17 +83,13 @@ struct CD4030 : Module {
 			bool a = aInputs[g].process(inputs[A_INPUTS + g].getVoltage());
 			bool q = (a != bInputs[g].process(inputs[B_INPUTS + g].getVoltage()));
 
-			if (q != prevQ[g]) {
-				 prevQ[g] = q;
-
-				if(q) {
-					outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
-					lights[Q_LIGHTS + g].setBrightness(1.0f);
-				}
-				else{
-					outputs[Q_OUTPUTS + g].setVoltage(0.0f);
-					lights[Q_LIGHTS + g].setBrightness(0.0f);
-				}
+			if(q) {
+				outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
+				lights[Q_LIGHTS + g].setBrightness(1.0f);
+			}
+			else{
+				outputs[Q_OUTPUTS + g].setVoltage(0.0f);
+				lights[Q_LIGHTS + g].setBrightness(0.0f);
 			}
 		}		
 	}

@@ -40,8 +40,6 @@ struct CD4012 : Module {
 	CMOSInput cInputs[NUM_GATES];
 	CMOSInput dInputs[NUM_GATES];
 	
-	bool prevQ[NUM_GATES] = {};
-	
 	CD4012() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
@@ -96,11 +94,13 @@ struct CD4012 : Module {
 						&& cInputs[g].process(inputs[C_INPUTS + g].getVoltage())
 						&& dInputs[g].process(inputs[D_INPUTS + g].getVoltage()));
 
-			if (q != prevQ[g]) {
-				prevQ[g] = q;
-				
-				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-				lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			if (q) {
+				outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
+				lights[Q_LIGHTS + g].setBrightness(1.0f);
+			}
+			else {
+				outputs[Q_OUTPUTS + g].setVoltage(0.0f);
+				lights[Q_LIGHTS + g].setBrightness(0.0f);
 			}
 		}		
 	}

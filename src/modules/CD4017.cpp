@@ -42,21 +42,28 @@ struct CD4017 : Module {
 	CMOSInput resetInput;
 	
 	int count = 0;
-	int prevCount = -1;
+	bool reset = false;
+	bool carry = false;
+	bool update = false;
 	
 	CD4017() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
-		prevCount = -1;
+		count = 0;
+		reset = false;
+		carry = false;
+		update = true;
 	}
 	
 	void onReset() override {
 		clockInput.reset();
 		inhibitInput.reset();
 		resetInput.reset();
-		
+
 		count = 0;
-		prevCount = -1;
+		carry = false;
+		reset = false;
+		update = true;
 	}
 
 	void setIOMode (int mode) {
@@ -90,6 +97,12 @@ struct CD4017 : Module {
 		// are we reset?
 		if (resetInput.process(inputs[RESET_INPUT].getVoltage())) {
 			count = 0;
+			carry = false;
+			
+			if (!reset)
+				update = true;
+				
+			reset = true;
 		}
 		else {
 			// process the clock
@@ -98,30 +111,48 @@ struct CD4017 : Module {
 			bool clock = enable && clockInput.process(inputs[CLOCK_INPUT].getVoltage());
 			
 			if (!prevClock && clock) {
-				if (++count >= MAX_COUNT)
+				if (++count >= MAX_COUNT) {
+					carry = true;
 					count = 0;
+				}
+				else if (count >= CARRY_COUNT)
+					carry = false;
+					
+				update = true;
+				reset = false;
 			}
 		}
 		
 		// decode the outputs
-		if (count != prevCount) {
-			for (int i = 0; i < MAX_COUNT; i++) {
-				bool q = (i == count);
-				outputs[DECODED_OUTPUTS + i].setVoltage(boolToGate(q));
-				lights[DECODED_LIGHTS + i].setBrightness(boolToLight(q));
-			}
-			
-			if(count < CARRY_COUNT) {
-				outputs[CARRY_OUTPUT].setVoltage(gateVoltage);
-				lights[CARRY_LIGHT].setBrightness(1.0f);
+		int out = DECODED_OUTPUTS;
+		int led = DECODED_LIGHTS;
+		
+		for (int i = 0; i < MAX_COUNT; i++) {
+			bool q = (i == count);
+			if (q) {
+				outputs[out++].setVoltage(gateVoltage);
+				if (update)
+					lights[led++].setBrightness(1.0f);
 			}
 			else {
-				outputs[CARRY_OUTPUT].setVoltage(0.0f);
+				outputs[out++].setVoltage(0.0f);
+				if (update)
+					lights[led++].setBrightness(0.0f);
+			}
+		}
+
+		if(carry) {
+			outputs[CARRY_OUTPUT].setVoltage(gateVoltage);
+			if (update)
+				lights[CARRY_LIGHT].setBrightness(1.0f);
+		}
+		else {
+			outputs[CARRY_OUTPUT].setVoltage(0.0f);
+			if (update)
 				lights[CARRY_LIGHT].setBrightness(0.0f);
-			}		
 		}
 		
-		prevCount = count;
+		update = false;
 	}
 };
 

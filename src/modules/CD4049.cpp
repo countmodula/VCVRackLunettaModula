@@ -78,8 +78,14 @@ struct CD4049 : Module {
 		for (int g = 0; g < NUM_GATES; g++) {
 			bool q = iInputs[g].process(inputs[I_INPUTS + g].getVoltage());
 		
-			outputs[Q_OUTPUTS + g].setVoltage(boolToGateInverted(q));
-			lights[Q_LIGHTS + g].setBrightness(boolToLightInverted(q));
+			if (!q) {
+				outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
+				lights[Q_LIGHTS + g].setBrightness(1.0f);
+			}
+			else {
+				outputs[Q_OUTPUTS + g].setVoltage(0.0f);
+				lights[Q_LIGHTS + g].setBrightness(0.0f);
+			}
 		}	
 	}
 };

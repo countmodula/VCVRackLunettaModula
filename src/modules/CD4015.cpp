@@ -58,12 +58,13 @@ struct CD4015 : Module {
 	CMOSInput clockInputs[NUM_GATES];
 	
 	TappedShiftRegister shiftReg[NUM_INPUTS];
-	
-	bool prevQ[NUM_GATES][4] = {};
+	bool reset = false;
 	
 	CD4015() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
+		
+		reset = false;
 	}
 	
 	void onReset() override {
@@ -109,43 +110,49 @@ struct CD4015 : Module {
 	void process(const ProcessArgs &args) override {
 	
 		int qOffset = 0;
-		
-		for (int g = 0; g < NUM_GATES; g++) {
-			bool update = false;
 
+		for (int g = 0; g < NUM_GATES; g++) {
+			bool change = false;
+			
 			// process the current shift register
 			if (resetInputs[g].process(inputs[RESET_INPUTS + g].getVoltage())) {
 				// reset holds all outputs low
 				shiftReg[g].reset();
-				update = true;
+				
+				if (!reset)
+					change = true;
+					
+				reset = true;
 			}
 			else {
 				// process clock
 				bool prevClock = clockInputs[g].isHigh();
 				bool clock = clockInputs[g].process(inputs[CLOCK_INPUTS + g].getVoltage());
-				
+
 				// leading clock edge shifts the data and insert the new data
 				if (clock & !prevClock) {
 					shiftReg[g].process(dataInputs[g].process(inputs[DATA_INPUTS + g].getVoltage()));
-					update = true;
+					change = true;
+					reset = false;
 				}
 			}
 			
 			// process the outputs
-			if (update) {
-				update = false;
-					
-				for (int i = 0; i < 4; i++) {
-					bool q = shiftReg[g].bits[i];
-					if (q != prevQ[g][i]) {
-						prevQ[g][i] = q;
-						
-						outputs[Q_OUTPUTS + qOffset + i].setVoltage(boolToGate(q));
-						lights[Q_LIGHTS + qOffset + i].setBrightness(boolToLight(q));
-					}
+			int out = Q_OUTPUTS + qOffset;
+			int led = Q_LIGHTS + qOffset;
+			for (int i = 0; i < 4; i++) {
+				if (shiftReg[g].bits[i]) {
+					outputs[out++].setVoltage(gateVoltage);
+					if (change)
+						lights[led].setBrightness(1.0f);
 				}
+				else {
+					outputs[out++].setVoltage(0.0f);
+					if (change)
+						lights[led].setBrightness(0.0f);
+				}
+				led++;
 			}
-			
 			qOffset += 4;
 		}
 	}

@@ -100,7 +100,7 @@ struct CD4031 : Module {
 		// what mode are we in?
 		bool recircMode = modeInput.process(inputs[MODE_INPUT].getVoltage());
 	
-		// garb the data input we want
+		// grab the data input we want
 		bool data = false;
 		if (recircMode) {
 			data = recircInput.process(inputs[RECIRC_INPUT].getVoltage());
@@ -122,8 +122,14 @@ struct CD4031 : Module {
 		delayedClock[0] = clock;
 		
 		// delayed clock
-		outputs[DEL_CLOCK_OUTPUT].setVoltage(boolToGate(delayedClock[1]));
-		lights[DEL_CLOCK_LIGHT].setBrightness(boolToLight(delayedClock[1]));
+		if (delayedClock[1]) {
+			outputs[DEL_CLOCK_OUTPUT].setVoltage(gateVoltage);
+			lights[DEL_CLOCK_LIGHT].setBrightness(1.0f);
+		}
+		else {
+			outputs[DEL_CLOCK_OUTPUT].setVoltage(0.0f);
+			lights[DEL_CLOCK_LIGHT].setBrightness(0.0f);
+		}
 		
 		// process the shift register here
 		if (edge) {
@@ -134,12 +140,20 @@ struct CD4031 : Module {
 			if (++out > 63)
 					out = 0;
 		}
-		
+
 		// data outputs
-		outputs[Q_OUTPUT].setVoltage(boolToGate(shiftRegister[out]));
-		lights[Q_LIGHT].setBrightness(boolToLight(shiftRegister[out]));
-		outputs[NQ_OUTPUT].setVoltage(boolToGateInverted(shiftRegister[out]));
-		lights[NQ_LIGHT].setBrightness(boolToLightInverted(shiftRegister[out]));
+		if (shiftRegister[out]) {
+			outputs[Q_OUTPUT].setVoltage(gateVoltage);
+			lights[Q_LIGHT].setBrightness(1.0f);
+			outputs[NQ_OUTPUT].setVoltage(0.0f);
+			lights[NQ_LIGHT].setBrightness(0.0f);
+		}
+		else {
+			outputs[Q_OUTPUT].setVoltage(0.0f);
+			lights[Q_LIGHT].setBrightness(0.0f);
+			outputs[NQ_OUTPUT].setVoltage(gateVoltage);
+			lights[NQ_LIGHT].setBrightness(1.0f);
+		}
 	}
 };
 

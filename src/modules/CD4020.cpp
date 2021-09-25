@@ -39,26 +39,26 @@ struct CD4020 : Module {
 	
 	CMOSInput clockInput;
 	CMOSInput resetInput;
-	
-	bool prevQ[NUM_BITS] = {};
-	
+
 	const int bitmap[NUM_BITS_PLUS_1] = { 0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192 };
 
 	int count = 0;
-	int prevCount = -1;
+	bool update = true;
+	bool reset = false;
 	
 	CD4020() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
-		prevCount = -1;
+		update = true;
+		reset = false;
 	}
 	
 	void onReset() override {
 		clockInput.reset();
 		resetInput.reset();
-
 		count = 0;
-		prevCount = -1;
+		update = true;
+		reset = true;
 	}
 
 	void setIOMode (int mode) {
@@ -91,6 +91,11 @@ struct CD4020 : Module {
 		// are we reset?
 		if (resetInput.process(inputs[RESET_INPUT].getVoltage())) {
 			count = 0;
+			
+			if (!reset)
+				update = true;
+				
+			reset = true;
 		}
 		else {
 			// process the clock
@@ -101,29 +106,32 @@ struct CD4020 : Module {
 			if (prevClock && !clock) {
 				if (++count >= MAX_COUNT)
 					count = 0;
+
+				update = true;
+				reset = false;
 			}
 		}
 		
 		// decode the outputs
-		if (count != prevCount) {
-			int g = 0;
-			for (int i = 1; i < NUM_BITS_PLUS_1; i++) {
-				bool q = (count & bitmap[i]) > 0;
-					
-				if (q) {
-					outputs[DIVIDE_OUTPUTS + g].setVoltage(gateVoltage);
-					lights[DIVIDE_LIGHTS + g].setBrightness(1.0f);
-				}
-				else {
-					outputs[DIVIDE_OUTPUTS + g].setVoltage(0.0f);
-					lights[DIVIDE_LIGHTS + g].setBrightness(0.0f);
-				}
+		int g = 0;
+		for (int i = 1; i < NUM_BITS_PLUS_1; i++) {
+			bool q = (count & bitmap[i]) > 0;
 
-				g++;
+			if (q) {
+				outputs[DIVIDE_OUTPUTS + g].setVoltage(gateVoltage);
+				if (update)
+					lights[DIVIDE_LIGHTS + g].setBrightness(1.0f);
 			}
+			else {
+				outputs[DIVIDE_OUTPUTS + g].setVoltage(0.0f);
+				if (update)
+					lights[DIVIDE_LIGHTS + g].setBrightness(0.0f);
+			}
+
+			g++;
 		}
 		
-		prevCount = count;
+		update = false;
 	}
 };
 

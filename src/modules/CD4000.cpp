@@ -42,7 +42,6 @@ struct CD4000 : Module {
 	CMOSInput cInputs[NUM_GATES];
 	CMOSInput gInput;
 	
-	bool prevQ[NUM_GATES] = {};
 	bool prevInv = false;
 	
 	CD4000() {
@@ -99,23 +98,21 @@ struct CD4000 : Module {
 			bool q = !(aInputs[g].process(inputs[A_INPUTS + g].getVoltage())
 						|| bInputs[g].process(inputs[B_INPUTS + g].getVoltage())
 						|| cInputs[g].process(inputs[C_INPUTS + g].getVoltage()));
-
-			if (q != prevQ[g]) {
-				prevQ[g] = q;
-
-				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-				lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+			if (q) {
+				outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
+				lights[Q_LIGHTS + g].setBrightness(1.0f);
+			}
+			else {
+				outputs[Q_OUTPUTS + g].setVoltage(0.0f);
+				lights[Q_LIGHTS + g].setBrightness(0.0f);
 			}
 		}		
 		
 		// inverter
 		bool inv = !gInput.process(inputs[G_INPUT].getVoltage());
-		if (inv != prevInv) {
-			prevInv = inv;
+		outputs[L_OUTPUT].setVoltage(boolToGate(inv));
+		lights[L_LIGHT].setBrightness(boolToLight(inv));
 
-			outputs[L_OUTPUT].setVoltage(boolToGate(inv));
-			lights[L_LIGHT].setBrightness(boolToLight(inv));
-		}
 	}
 };
 

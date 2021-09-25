@@ -35,8 +35,7 @@ struct CD4010 : Module {
 	CMOSInput iInputs[NUM_GATES];
 	
 	bool delay[NUM_GATES][2] = {};
-	bool prevQ = false;
-	
+
 	CD4010() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
@@ -84,12 +83,14 @@ struct CD4010 : Module {
 			bool q = delay[g][1];
 			delay[g][1] = delay[g][0];
 			delay[g][0] = iInputs[g].process(inputs[I_INPUTS + g].getVoltage());
-		
-			if (q != prevQ) {
-				prevQ = q;
-				
-				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
-				lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+
+			if (q) {
+				outputs[Q_OUTPUTS + g].setVoltage(gateVoltage);
+				lights[Q_LIGHTS + g].setBrightness(1.0f);
+			}
+			else {
+				outputs[Q_OUTPUTS + g].setVoltage(0.0f);
+				lights[Q_LIGHTS + g].setBrightness(0.0f);
 			}
 		}	
 	}

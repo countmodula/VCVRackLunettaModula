@@ -34,6 +34,7 @@ struct ADC : Module {
 	#include "../modes/modeVariables.hpp"
 	int prevValue = 0;
 	
+	float outs[8] = {};
 	
 	ADC() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -43,10 +44,13 @@ struct ADC : Module {
 		configParam(REFERENCE_PARAM, 1.0f, 10.0f, 10.0f, "Reference voltage", " Volts");
 		
 		setIOMode(VCVRACK_STANDARD);
+		
+		for (int b = 0; b < 8; b++)
+			outs[b] = 0.0f;
 	}
 	
 	void onReset() override {
-		
+
 	}
 	
 	void setIOMode (int mode) {
@@ -75,6 +79,7 @@ struct ADC : Module {
 	// table of full scale bits
 	float maxBits[9] = {0, 0, 3, 7, 15, 31, 63, 127, 255};
 
+	
 	void process(const ProcessArgs &args) override {
 
 		// determine bit depth and reference voltage to use
@@ -98,16 +103,19 @@ struct ADC : Module {
 			for (int b = 0; b < 8; b++) {
 				if (b < bits) {
 					bool q = (x == (digitalValue & x));
-					outputs[BIT_OUTPUTS + b].setVoltage(boolToGate(q));
+					outs[b] = boolToGate(q);
 					lights[BIT_LIGHTS + b].setBrightness(boolToLight(q));
 					x = x << 1;
 				}
 				else {
-					outputs[BIT_OUTPUTS + b].setVoltage(0.0f);
+					outs[b] = 0.0f;
 					lights[BIT_LIGHTS + b].setBrightness(0.0f);
 				}
 			}
 		}
+
+		for (int b = 0; b < 8; b++)
+			outputs[BIT_OUTPUTS + b].setVoltage(outs[b]);
 	}
 };
 
