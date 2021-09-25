@@ -24,6 +24,7 @@
 <td align="center">v1.2.1</td>
 <td>
 Minor bug fixes and performance tweaks
+Update push buttons on the Buttons module the stay lit when they are on in latched mode.
 </td>
 </tr>
 
