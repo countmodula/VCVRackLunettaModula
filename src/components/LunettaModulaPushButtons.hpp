@@ -61,7 +61,29 @@ struct LunettaModulaLitPB : SvgSwitch {
 			paramQuantity->setValue(1.0f);
 		else
 			paramQuantity->setValue(0.0f);
-	}	
+	}
+	
+	// set off
+	void setMomentaryMode() {
+		momentary = true;
+		paramQuantity->setValue(0.0f);
+		dirtyValue = -1;
+	}
+	
+	void setLatchMode(bool state) {
+		momentary = false;
+		if (state)
+			paramQuantity->setValue(1.0f);
+			
+		dirtyValue = -1;
+	}
+	
+	void toggleMode() {
+		if (momentary)
+			setLatchMode(false);
+		else
+			setMomentaryMode();
+	}
 
 	void setFirstLightId(int firstLightId) {
 

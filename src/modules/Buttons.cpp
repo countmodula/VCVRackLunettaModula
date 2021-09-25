@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //	Lunetta Modula Plugin for VCV Rack by Count Modula - Buttons
 //	Hex manual logic buttons
-//  Copyright (C) 2020  Adam Verspaget
+//  Copyright (C) 2021  Adam Verspaget
 //----------------------------------------------------------------------------
 #include "../LunettaModula.hpp"
 #include "../inc/Utility.hpp"
@@ -26,32 +26,32 @@ struct Buttons : Module {
 	};
 	enum LightIds {
 		ENUMS(Q_LIGHTS, NUM_GATES),
-		ENUMS(MOM_LIGHTS, NUM_GATES),
+		ENUMS(LATCH_LIGHTS, NUM_GATES),
 		ENUMS(BTN_PARAM_LIGHTS, NUM_GATES),
 		NUM_LIGHTS
 	};
 	
 	// add the variables we'll use when managing modes
 	#include "../modes/modeVariables.hpp"
+
+	int processCount = 8;
+	int moduleVersion = 2;
+	bool setButtonModes = false;
 	
+	// for backward compatibility with v1 modules
 	bool latched[NUM_GATES] = {};
 	bool buttonValue[NUM_GATES] = {};
-	
-	bool outValue[NUM_GATES] = {};
-	int processCount = 8;
 	
 	Buttons() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		
 		for (int g = 0; g < NUM_GATES; g++) 
 			configParam(BTN_PARAMS + g, 0.0f, 1.0f, 0.0f, "High/low");
+			
+		moduleVersion = 2;
 	}
 	
 	void onReset() override {
-		
-		for(int i = 0; i < NUM_GATES; i++)
-			buttonValue[i] = outValue[i] = latched[i] = false;
-			
 		processCount = 8;
 	}
 	
@@ -64,21 +64,21 @@ struct Buttons : Module {
 	json_t *dataToJson() override {
 		json_t *root = json_object();
 
-		json_object_set_new(root, "moduleVersion", json_integer(1));
+		json_object_set_new(root, "moduleVersion", json_integer(2));
 
 		json_t *mod = json_array();
 		json_t *val = json_array();
 		
 		for (int g = 0; g < NUM_GATES; g++) {
 			json_array_insert_new(mod, g, json_boolean(latched[g]));
-			json_array_insert_new(val, g, json_boolean(outValue[g]));
+			json_array_insert_new(val, g, json_boolean(params[BTN_PARAMS + g].getValue() > 0.5f));
 		}
 
 		json_object_set_new(root, "modes", mod);
 		json_object_set_new(root, "states", val);
 
 		// add the I/O mode details
-		#include "../modes/dataToJson.hpp"		
+		#include "../modes/dataToJson.hpp"
 		
 		return root;
 	}
@@ -87,7 +87,7 @@ struct Buttons : Module {
 
 		json_t *mod = json_object_get(root, "modes");
 		json_t *val = json_object_get(root, "states");
-
+		
 		for (int g = 0; g < NUM_GATES; g++) {
 			if (mod) {
 				json_t *v = json_array_get(mod, g);
@@ -98,12 +98,14 @@ struct Buttons : Module {
 			if (val) {
 				json_t *v = json_array_get(val, g);
 				if (v)
-					outValue[g] = json_boolean_value(v);
+					buttonValue[g] = json_boolean_value(v);
 			}
 		}
 		
 		// grab the I/O mode details
 		#include "../modes/dataFromJson.hpp"
+		
+		setButtonModes = true;
 	}	
 
 	void process(const ProcessArgs &args) override {
@@ -114,24 +116,9 @@ struct Buttons : Module {
 			
 			for (int g = 0; g < NUM_GATES; g++) {
 				bool q = params[BTN_PARAMS + g].getValue() > 0.5f;
-				
-				if (latched[g]) {
-					// we toggle the outputs on click in latched mode
-					if (q && !buttonValue[g])
-						outValue[g] = !outValue[g];
-				}
-				else {
-					// output follows the button press in momentary mode
-					outValue[g] = q;
-				}
-			
-				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(outValue[g]));
-				lights[Q_LIGHTS + g].setBrightness(boolToLight(outValue[g]));
-
-				lights[MOM_LIGHTS + g].setBrightness(boolToLight(latched[g]));
-				
-				// for identification of the button click
-				buttonValue[g] = q;
+				outputs[Q_OUTPUTS + g].setVoltage(boolToGate(q));
+				lights[Q_LIGHTS + g].setBrightness(boolToLight(q));
+				lights[LATCH_LIGHTS + g].setBrightness(boolToLight(latched[g]));
 			}
 		}
 	}
@@ -155,7 +142,7 @@ struct ButtonsWidget : ModuleWidget {
 			addOutput(createOutputCentered<LunettaModulaLogicOutputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS6[STD_ROW1 + g]), module, Buttons::Q_OUTPUTS + g));
 			
 			// lights
-			addChild(createLightCentered<SmallLight<GreenLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL2] - 8, STD_ROWS6[STD_ROW1 + g] - 19), module, Buttons::MOM_LIGHTS + g));
+			addChild(createLightCentered<SmallLight<GreenLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL2] - 8, STD_ROWS6[STD_ROW1 + g] - 19), module, Buttons::LATCH_LIGHTS + g));
 			addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL3] + 12, STD_ROWS6[STD_ROW1 + g] - 19), module, Buttons::Q_LIGHTS + g));
 		}
 	}
@@ -167,23 +154,20 @@ struct ButtonsWidget : ModuleWidget {
 		bool latch;
 	
 		void onAction(const event::Action &e) override {
-		
-			// history - current settings
-			history::ModuleChange *h = new history::ModuleChange;
-			h->name = "all button mode";
-			
-			h->moduleId = widget->module->id;
-			h->oldModuleJ = widget->toJson();
-
-			for (int i = 0; i < NUM_GATES; i++) {
-				module->latched[i] = latch;
-				if (!latch)
-					module->outValue[i] = false;
-			}	
-			
-			// history - new settings
-			h->newModuleJ = widget->toJson();
-			APP->history->push(h);	
+			if (latch) {
+				for (int i = 0; i < NUM_GATES; i++) {
+					LunettaModulaLitPB *pB = (LunettaModulaLitPB *)(widget->getParam(Buttons::BTN_PARAMS + i));
+					pB->setLatchMode(false); 
+					module->latched[i] = true;
+				}
+			}
+			else {
+				for (int i = 0; i < NUM_GATES; i++) {
+					LunettaModulaLitPB *pB = (LunettaModulaLitPB *)(widget->getParam(Buttons::BTN_PARAMS + i));
+					pB->setMomentaryMode(); 
+					module->latched[i] = false;
+				}			
+			}
 		}
 	};		
 	
@@ -194,23 +178,11 @@ struct ButtonsWidget : ModuleWidget {
 		int id;
 		
 		void onAction(const event::Action &e) override {
-		
-			// history - current settings
-			history::ModuleChange *h = new history::ModuleChange;
-			h->name = "button mode";
-			
-			h->moduleId = widget->module->id;
-			h->oldModuleJ = widget->toJson();
-
-			module->latched[id] = !module->latched[id];
-			if (!module->latched[id])
-				module->outValue[id] = false;
-			
-			// history - new settings
-			h->newModuleJ = widget->toJson();
-			APP->history->push(h);	
+			LunettaModulaLitPB *pB = (LunettaModulaLitPB *)(widget->getParam(Buttons::BTN_PARAMS + id));
+			pB->toggleMode();
+			module->latched[id] ^= true;
 		}
-	};		
+	};
 	
 	// button mode menu 
 	struct ButtonModeMenu : MenuItem {
@@ -240,7 +212,9 @@ struct ButtonsWidget : ModuleWidget {
 			menu->addChild(nModeMenuItemAllMom);	
 			
 			for (int i = 0; i < NUM_GATES; i++) {
-				ButtonModeMenuItem *bModeMenuItem = createMenuItem<ButtonModeMenuItem>(labels[i], CHECKMARK(module->latched[i]));
+				LunettaModulaLitPB *pB = (LunettaModulaLitPB *)(widget->getParam(Buttons::BTN_PARAMS + i));
+
+				ButtonModeMenuItem *bModeMenuItem = createMenuItem<ButtonModeMenuItem>(labels[i], CHECKMARK(pB->momentary == false));
 				bModeMenuItem->widget = widget;
 				bModeMenuItem->module = module;
 				bModeMenuItem->id = i;
@@ -269,6 +243,25 @@ struct ButtonsWidget : ModuleWidget {
 		
 		// add the I/O mode menu items
 		#include "../modes/modeMenus.hpp"
+	}
+	
+	void step() override {
+		if (module) {
+			Buttons *m = dynamic_cast<Buttons*>(module);
+
+			if (m->setButtonModes) {
+				m->setButtonModes = false;
+				
+				for (int i = 0; i < NUM_GATES; i ++) {
+					if (m->latched[i]) {
+						LunettaModulaLitPB *pB = (LunettaModulaLitPB *)(getParam(Buttons::BTN_PARAMS + i));
+						pB->setLatchMode(m->buttonValue[i]);
+					}
+				}
+			}
+		}
+
+		Widget::step();
 	}	
 };
 

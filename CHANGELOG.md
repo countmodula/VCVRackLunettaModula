@@ -21,14 +21,6 @@
 
 <tr valign="top">
 <td align="center">25-Sep-2021</td>
-<td align="center">v1.2.2</td>
-<td>
-More minor bug fixes and performance tweaks
-</td>
-</tr>
-
-<tr valign="top">
-<td align="center">21-Sep-2021</td>
 <td align="center">v1.2.1</td>
 <td>
 Minor bug fixes and performance tweaks
