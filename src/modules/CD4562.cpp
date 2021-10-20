@@ -41,8 +41,16 @@ struct CD4562 : Module {
 	unsigned int in = NUM_BITS-1;
 	unsigned int out[8] = { 111, 95, 79, 63, 47, 31, 15, 127 };
 
+	int outputLabels[8] = {16, 32, 48, 64, 80, 96, 112, 128};
 	CD4562() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		configInput(DATA_INPUT, "Data");
+		configInput(CLOCK_INPUT, "Clock");
+		
+		for (int q = 0; q < 8; q++)
+			configOutput(Q_OUTPUTS + q, rack::string::f("Q%d", outputLabels[q]));
+
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

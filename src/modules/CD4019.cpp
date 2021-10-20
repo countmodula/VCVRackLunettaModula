@@ -45,6 +45,18 @@ struct CD4019 : Module {
 	
 	CD4019() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		for (int i = 0; i < NUM_GATES; i ++) {
+			configInput(A_INPUTS + i, rack::string::f("A%d", i + 1));
+			configInput(B_INPUTS + i, rack::string::f("B%d", i + 1));
+			configOutput(Q_OUTPUTS + i, rack::string::f("D%d", i + 1));
+		}
+		
+		configInput(KA_INPUT, "KA");
+		configInput(KB_INPUT, "KB");
+
+		
+		
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

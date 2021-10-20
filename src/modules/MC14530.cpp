@@ -44,6 +44,19 @@ struct MC14530 : Module {
 	
 	MC14530() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		char c = 'A';
+		for (int i = 0; i < NUM_GATES; i++) {
+			configInput(A_INPUTS + i, rack::string::f("Gate A logic %c", c));
+			configInput(B_INPUTS + i, rack::string::f("Gate B logic %c", c++));
+		}
+		
+		configInput(WA_INPUT, "Gate A W");
+		configInput(WB_INPUT, "Gate B W");
+		
+		configOutput(ZA_OUTPUT, "Gate A Z");
+		configOutput(ZB_OUTPUT, "Gate B Z");
+		
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

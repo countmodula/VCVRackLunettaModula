@@ -4,7 +4,7 @@
 <center>
 <img src="./img/CountModulaLunettaLogo.png" alt="Count Modula">
 <h1 style="border-bottom: 0px;font-size:50px;">Lunetta Modula by Count Modula</h1>
-<h2 style="border-bottom: 0px;">Plugin "Lunetta" modules for VCV Rack v1 by Adam Verspaget (Count Modula)</h2>
+<h2 style="border-bottom: 0px;">Plugin "Lunetta" modules for VCV Rack v2 by Adam Verspaget (Count Modula)</h2>
 </center>
 Inspired by the works of Stanley Lunetta who's Moosack Machines were experimental electronic instruments made from digital integrated circuits, these modules represent raw building blocks that can be patched together to create your own "Lunetta". 
 Please note these are NOT normal synth modules, they are in no way HiFi and are probably fit for experimental use only.

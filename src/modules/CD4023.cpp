@@ -41,6 +41,15 @@ struct CD4023 : Module {
 	CD4023() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
+		
+		char iLabel = 'A';
+		char oLabel= 'J';
+		for (int g = 0; g < NUM_GATES; g++) {
+			configInput(A_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configInput(B_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configInput(C_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configOutput(Q_OUTPUTS + g, rack::string::f("Gate %d %c", g + 1, oLabel++));
+		}		
 	}
 	
 	void onReset() override {

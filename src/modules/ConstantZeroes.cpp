@@ -34,6 +34,10 @@ struct ConstantZeroes : Module {
 	ConstantZeroes() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
+		
+		for (int g = 0; g < 12; g ++) {
+			configOutput(Q_OUTPUTS + g, "Logical zero");
+		}
 	}
 	
 	void onReset() override {

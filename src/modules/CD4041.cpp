@@ -39,6 +39,14 @@ struct CD4041 : Module {
 	
 	CD4041() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		char c = 'A';
+		for (int g = 0; g < NUM_GATES; g++) {
+			configInput(A_INPUTS + g, rack::string::f("%c", c));
+			configOutput(Q_OUTPUTS + g, rack::string::f("%c", c));
+			configOutput(NQ_OUTPUTS + g, rack::string::f("Not %c", c++));
+		}
+		
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

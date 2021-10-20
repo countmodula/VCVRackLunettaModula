@@ -43,10 +43,17 @@ struct ADC : Module {
 		configParam(LEVEL_PARAM, 0.0f, 1.0f, 1.0f, "Input level", " ", 0.0f, 10.0f, 0.0f );
 		configParam(REFERENCE_PARAM, 1.0f, 10.0f, 10.0f, "Reference voltage", " Volts");
 		
+		configInput(ANALOGUE_INPUT, "Analogue");
+		
 		setIOMode(VCVRACK_STANDARD);
 		
-		for (int b = 0; b < 8; b++)
+		for (int b = 0; b < 8; b++) {
 			outs[b] = 0.0f;
+			configOutput(BIT_OUTPUTS + b, rack::string::f("Bit %d", b + 1));
+		}
+		
+		outputInfos[BIT_OUTPUTS]->description = "Least significant bit";
+		outputInfos[BIT_OUTPUTS + 7]->description = "Most significant bit";
 	}
 	
 	void onReset() override {
@@ -130,13 +137,13 @@ struct ADCWidget : ModuleWidget {
 		// input section
 		addInput(createInputCentered<LunettaModulaAnalogInputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_HALF_ROWS8(STD_ROW1)), module, ADC::ANALOGUE_INPUT));
 		addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_HALF_ROWS8(STD_ROW2)), module, ADC::OL_LIGHT));
-		addParam(createParamCentered<LunettaModulaKnobRed>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_HALF_ROWS8(STD_ROW3)), module, ADC::LEVEL_PARAM));
+		addParam(createParamCentered<Potentiometer<RedKnob>>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_HALF_ROWS8(STD_ROW3)), module, ADC::LEVEL_PARAM));
 
 		// TODO: add a clock input ?
 
 		// converter section
-		addParam(createParamCentered<LunettaModulaKnobRed>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_HALF_ROWS8(STD_ROW5)), module, ADC::REFERENCE_PARAM));
-		addParam(createParamCentered<LunettaModulaRotarySwitchRed>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_HALF_ROWS8(STD_ROW7)), module, ADC::BITS_PARAM));
+		addParam(createParamCentered<Potentiometer<RedKnob>>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_HALF_ROWS8(STD_ROW5)), module, ADC::REFERENCE_PARAM));
+		addParam(createParamCentered<RotarySwitch<RedKnob>>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_HALF_ROWS8(STD_ROW7)), module, ADC::BITS_PARAM));
 		
 		// outputs
 		for (int b = 0; b < 8; b++) {

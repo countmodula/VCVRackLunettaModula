@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 //	Lunetta Modula Plugin for VCV Rack by Count Modula - CD4008
 //	4-Bit Full Adder With Parallel Carry Out
 //	Copyright (C) 2021  Adam Verspaget
@@ -45,6 +45,16 @@ struct CD4008 : Module {
 
 	CD4008() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		for (int i = 0; i < NUM_GATES; i++) {
+			configInput(A_INPUTS + i, rack::string::f("A%d", i + 1));
+			configInput(B_INPUTS + i, rack::string::f("B%d", i + 1));
+			configOutput(SUM_OUTPUTS + i, rack::string::f("S%d", i + 1));
+		}
+
+		configInput(CARRY_INPUT, "Carry");
+		configOutput(CARRY_OUTPUT, "Carry");
+		
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

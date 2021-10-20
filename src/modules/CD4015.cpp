@@ -12,9 +12,6 @@
 
 #define NUM_GATES 2
 
-
-
-
 struct CD4015 : Module {
 	enum ParamIds {
 		NUM_PARAMS
@@ -62,6 +59,18 @@ struct CD4015 : Module {
 	
 	CD4015() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		
+		for (int g = 0; g < NUM_GATES; g++) {
+			configInput(DATA_INPUTS + g, rack::string::f("Register %d data", g + 1));
+			configInput(RESET_INPUTS + g, rack::string::f("Register %d reset", g + 1));
+			configInput(CLOCK_INPUTS + g, rack::string::f("Register %d clock", g + 1));
+			
+			for (int q = 0; q < 4; q++) {
+				configOutput(Q_OUTPUTS + (g * 4) + q, rack::string::f("Register %d Q%d", g + 1, q + 1));
+			}
+		}
+				
 		setIOMode(VCVRACK_STANDARD);
 		
 		reset = false;

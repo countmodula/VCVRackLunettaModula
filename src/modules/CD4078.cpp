@@ -36,6 +36,17 @@ struct CD4078 : Module {
 	
 	CD4078() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		char c = 'A';
+		for (int i = 0; i < 8; i ++)
+			configInput(A_INPUTS, rack::string::f("%c", c++));
+		
+		configOutput(J_OUTPUT, "J");
+		configOutput(K_OUTPUT, "K");
+		
+		outputInfos[J_OUTPUT]->description = "NOR";
+		outputInfos[K_OUTPUT]->description = "OR";		
+		
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

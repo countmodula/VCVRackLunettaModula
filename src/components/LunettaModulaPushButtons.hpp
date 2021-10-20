@@ -53,29 +53,25 @@ struct LunettaModulaLitPB : SvgSwitch {
 		shadow->opacity = 0.0f;
 	}
 	
-	// override the base randomizer as it sets switches to invalid values.
-	void randomize() override {
-		SvgSwitch::randomize();
-		
-		if (paramQuantity->getValue() > 0.5f)
-			paramQuantity->setValue(1.0f);
-		else
-			paramQuantity->setValue(0.0f);
-	}
-	
 	// set off
 	void setMomentaryMode() {
 		momentary = true;
-		paramQuantity->setValue(0.0f);
-		dirtyValue = -1;
+		ParamQuantity* pq = getParamQuantity();
+		pq->setValue(0.0f);
+		pq->resetEnabled = false;
+		pq->randomizeEnabled = false;
+		fb->dirty = true;
 	}
 	
 	void setLatchMode(bool state) {
 		momentary = false;
+		ParamQuantity* pq = getParamQuantity();
+		pq->resetEnabled = true;
+		pq->randomizeEnabled = true;
 		if (state)
-			paramQuantity->setValue(1.0f);
+			getParamQuantity()->setValue(1.0f);
 			
-		dirtyValue = -1;
+		fb->dirty = true;
 	}
 	
 	void toggleMode() {
@@ -87,8 +83,7 @@ struct LunettaModulaLitPB : SvgSwitch {
 
 	void setFirstLightId(int firstLightId) {
 
-		if (paramQuantity)
-			light->module = paramQuantity->module;
+		light->module = module;
 		
 		light->firstLightId = firstLightId;
 		
@@ -101,9 +96,10 @@ struct LunettaModulaLitPB : SvgSwitch {
 	}
 	
 	void onChange(const event::Change& e) override {
-
-		if (!frames.empty() && paramQuantity) {
-			int index = (int) std::round(paramQuantity->getValue() - paramQuantity->getMinValue());
+		ParamQuantity* pq = getParamQuantity();
+		
+		if (!frames.empty() && pq) {
+			int index = (int) std::round(pq->getValue() - pq->getMinValue());
 			index = math::clamp(index, 0, (int) frames.size() - 1);
 			sw->setSvg(frames[index]);
 
@@ -115,9 +111,9 @@ struct LunettaModulaLitPB : SvgSwitch {
 	}
 	
 	void step() override{
-
-		if (light->module) {
-			light->module->lights[light->firstLightId].setBrightness(paramQuantity->getValue() > 0.5 ? 1.0 : 0.0);
+		ParamQuantity* pq = getParamQuantity();
+		if (light->module && pq) {
+			light->module->lights[light->firstLightId].setBrightness(pq->getValue() > 0.5 ? 1.0 : 0.0);
 		}
 		
 		SvgSwitch::step();
@@ -240,16 +236,6 @@ struct LunettaModulaPB :  SvgSwitch {
 	LunettaModulaPB() {
 		// no shadow for switches or buttons
 		shadow->opacity = 0.0f;
-	}
-
-	// override the base randomizer as it sets switches to invalid values.
-	void randomize() override {
-		SvgSwitch::randomize();
-		
-		if (paramQuantity->getValue() > 0.5f)
-			paramQuantity->setValue(1.0f);
-		else
-			paramQuantity->setValue(0.0f);
 	}
 };
 
