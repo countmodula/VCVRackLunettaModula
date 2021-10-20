@@ -21,6 +21,30 @@
      id="defs820">
     <linearGradient
        inkscape:collect="always"
+       id="linearGradient845">
+      <stop
+         style="stop-color:#00a900;stop-opacity:1;"
+         offset="0"
+         id="stop841" />
+      <stop
+         style="stop-color:#2ee042;stop-opacity:1"
+         offset="1"
+         id="stop843" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient837">
+      <stop
+         style="stop-color:#008000;stop-opacity:1;"
+         offset="0"
+         id="stop833" />
+      <stop
+         style="stop-color:#00b200;stop-opacity:1"
+         offset="1"
+         id="stop835" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
        xlink:href="#linearGradient866"
        id="linearGradient874"
        gradientUnits="userSpaceOnUse"
@@ -85,6 +109,26 @@
          offset="1"
          style="stop-color:#e6e6e6;stop-opacity:1" />
     </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient837"
+       id="linearGradient839"
+       x1="-1.4"
+       y1="293"
+       x2="-1.4"
+       y2="288.79999"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(5.7208337,0.09998159)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient845"
+       id="linearGradient847"
+       x1="-0.79999995"
+       y1="293"
+       x2="-0.79999995"
+       y2="289"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(4.7625001,6.0081482e-6)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -93,9 +137,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.313708"
-     inkscape:cx="27.366313"
-     inkscape:cy="18.98585"
+     inkscape:zoom="26.393801"
+     inkscape:cx="6.4030185"
+     inkscape:cy="15.496063"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -141,7 +185,13 @@
        cy="292.89999"
        r="4" />
     <circle
-       style="opacity:1;fill:#00a900;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       style="opacity:1;fill:url(#linearGradient839);fill-opacity:1;stroke:none;stroke-width:0.205;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       id="circle4264"
+       cx="4.0999999"
+       cy="292.89999"
+       r="4.0999999" />
+    <circle
+       style="opacity:1;fill:url(#linearGradient847);fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
        id="circle4258"
        cx="4.0999999"
        cy="292.89999"
@@ -152,12 +202,6 @@
        cx="4.0999999"
        cy="292.8992"
        r="2.6696289" />
-    <circle
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#008000;stroke-width:0.2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
-       id="circle4264"
-       cx="4.0999999"
-       cy="292.89999"
-       r="4" />
     <circle
        r="2.6500001"
        cy="-292.89999"
