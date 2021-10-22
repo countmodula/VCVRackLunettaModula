@@ -39,7 +39,7 @@ struct CD4078 : Module {
 		
 		char c = 'A';
 		for (int i = 0; i < 8; i ++)
-			configInput(A_INPUTS, rack::string::f("%c", c++));
+			configInput(A_INPUTS + i, rack::string::f("%c", c++));
 		
 		configOutput(J_OUTPUT, "J");
 		configOutput(K_OUTPUT, "K");
