@@ -354,6 +354,22 @@
 		  "tags": [
 			"Logic"
 		  ]
+		},
+		{
+		  "slug": "CD4514",
+		  "name": "CD4514 4-Bit Latched/4-to-16 Line Decoder (Active High Outputs)",
+		  "description": "4-Bit Latched/4-to-16 Line Decoder with Active High Outputs)",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "CD4515",
+		  "name": "CD4515 4-Bit Latched/4-to-16 Line Decoder (Active Low Outputs)",
+		  "description": "4-Bit Latched/4-to-16 Line Decoder with Active Low Outputs",
+		  "tags": [
+			"Logic"
+		  ]
 		}
 	]
 }

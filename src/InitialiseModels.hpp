@@ -45,6 +45,8 @@ p->addModel(modelCD4078);
 p->addModel(modelCD4081);
 p->addModel(modelCD4082);
 p->addModel(modelCD4086);
+p->addModel(modelCD4514);
+p->addModel(modelCD4515);
 p->addModel(modelCD4532);
 p->addModel(modelCD4562);
 p->addModel(modelCD40106);
