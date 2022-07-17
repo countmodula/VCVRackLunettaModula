@@ -370,6 +370,24 @@
 		  "tags": [
 			"Logic"
 		  ]
+		},
+		{
+		  "slug": "CD4516",
+		  "name": "CD4516 Presettable Binary Up/Down Counter",
+		  "description": "Presettable Binary Up/Down Counter",
+		  "tags": [
+			"Logic",
+			"Clock modulator"
+		  ]
+		},
+		{
+		  "slug": "Binary8",
+		  "name": "8-bit manual binary values",
+		  "description": "Manually generates 8-bit binary values",
+		  "tags": [
+			"Utility",
+			"Control"
+		  ]
 		}
 	]
 }
