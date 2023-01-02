@@ -38,7 +38,10 @@
 <td align="center">22-Nov-2021</td>
 <td align="center">v2.0.0</td>
 <td>
-Port to v2 API
+<ul>
+<b>Module Updates:</b>
+<li>Port to v2 API</li>
+</ul>
 <ul>
 <b>New Modules:</b>
 <li>CD4514 CD4514 4-Bit Latched/4-to-16 Line Decoder (Active High Outputs)</li>
