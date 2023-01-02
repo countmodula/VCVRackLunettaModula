@@ -55,3 +55,4 @@ p->addModel(modelCD4562);
 p->addModel(modelCD40106);
 p->addModel(modelMC14530);
 p->addModel(modelTruth2);
+p->addModel(modelTruth3);

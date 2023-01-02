@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
-//	Lunetta Modula Plugin for VCV Rack by Count Modula - Truth2
-//	2-Bit Logic Truth table
+//	Lunetta Modula Plugin for VCV Rack by Count Modula - Truth3
+//	3-Bit Logic Truth table
 //  Copyright (C) 2023  Adam Verspaget
 //----------------------------------------------------------------------------
 #include "../LunettaModula.hpp"
@@ -8,11 +8,11 @@
 #include "../inc/CMOSInput.hpp"
 
 // used by mode management includes
-#define MODULE_NAME Truth2
+#define MODULE_NAME Truth3
 
-#define NUM_STATES 4
+#define NUM_STATES 8
 
-struct Truth2 : Module {
+struct Truth3 : Module {
 	enum ParamIds {
 		ENUMS(STATE_PARAMS, NUM_STATES),
 		NUM_PARAMS
@@ -20,6 +20,7 @@ struct Truth2 : Module {
 	enum InputIds {
 		A_INPUT,
 		B_INPUT,
+		C_INPUT,
 		NUM_INPUTS
 	};
 	enum OutputIds {
@@ -43,10 +44,11 @@ struct Truth2 : Module {
 
 	CMOSInput aInput;
 	CMOSInput bInput;
+	CMOSInput cInput;
 
 	bool states[NUM_STATES] = {};
 	
-	Truth2() {
+	Truth3() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		
 		for (int g = 0; g < NUM_STATES; g++) {
@@ -55,6 +57,7 @@ struct Truth2 : Module {
 			
 		configInput(A_INPUT, "A");
 		configInput(B_INPUT, "B");
+		configInput(C_INPUT, "C");
 		
 		configOutput(Q_OUTPUT, "Q");
 		configOutput(NQ_OUTPUT, "Not Q");
@@ -110,13 +113,17 @@ struct Truth2 : Module {
 		// process inputs
 		int q = 0;
 		if (aInput.process(inputs[A_INPUT].getVoltage())) {
-			q += 2;
+			q += 4;
 		}
 		
 		if (bInput.process(inputs[B_INPUT].getVoltage())) {
-			q += 1;
+			q += 2;
 		}
 		
+		
+		if (cInput.process(inputs[C_INPUT].getVoltage())) {
+			q += 1;
+		}		
 		// process buttons and state lights - no need to do this at audio rates
 		if (++processCount > 8) {
 			processCount = 0;
@@ -143,42 +150,45 @@ struct Truth2 : Module {
 			outputs[NQ_OUTPUT].setVoltage(gateVoltage);
 			lights[NQ_LIGHT].setBrightness(1.0f);
 		}
-		
 	}
 };
 
-struct Truth2Widget : ModuleWidget {
-	Truth2Widget(Truth2 *module) {
+struct Truth3Widget : ModuleWidget {
+	Truth3Widget(Truth3 *module) {
 		setModule(module);
-		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Truth2.svg")));
+		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Truth3.svg")));
 
 		// screws
 		#include "../components/stdScrews.hpp"	
 
 		// A/B inputs
-		addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_ROWS6[STD_ROW1]), module, Truth2::A_INPUT));
-		addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS6[STD_ROW1]), module, Truth2::B_INPUT));
+		addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_ROWS6[STD_ROW1]), module, Truth3::A_INPUT));
+		addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL2], STD_ROWS6[STD_ROW1]), module, Truth3::B_INPUT));
+		addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS6[STD_ROW1]), module, Truth3::C_INPUT));
 
 		// buttons and state lights
+		float row = STD_ROWS6[STD_ROW2] - 5.0;
 		for (int g = 0; g < NUM_STATES; g++) {
-			addParam(createParamCentered<LunettaModulaLEDPushButton<LunettaModulaPBLight<RedLight>>>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS6[STD_ROW2 + g]), module, Truth2::STATE_PARAMS + g, Truth2::STATE_PARAM_LIGHTS + g));
-			addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL1] - 15, STD_ROWS6[STD_ROW2 + g]), module, Truth2::CURRENT_STATE_LIGHTS + g));
+			addParam(createParamCentered<LunettaModulaLEDPushButtonMini<LunettaModulaPBLight<RedLight>>>(Vec(STD_COLUMN_POSITIONS[STD_COL3], row), module, Truth3::STATE_PARAMS + g, Truth3::STATE_PARAM_LIGHTS + g));
+			addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL1] - 15, row), module, Truth3::CURRENT_STATE_LIGHTS + g));
+			
+			row += 25.0;
 		}
 		
 		// Q output
-		addOutput(createOutputCentered<LunettaModulaLogicOutputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_ROWS6[STD_ROW6]), module, Truth2::Q_OUTPUT));
-		addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL1] + 12, STD_ROWS6[STD_ROW6] - 19), module, Truth2::Q_LIGHT));
+		addOutput(createOutputCentered<LunettaModulaLogicOutputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_ROWS6[STD_ROW6]), module, Truth3::Q_OUTPUT));
+		addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL1] + 12, STD_ROWS6[STD_ROW6] - 19), module, Truth3::Q_LIGHT));
 		
 		// NQ output
-		addOutput(createOutputCentered<LunettaModulaLogicOutputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS6[STD_ROW6]), module, Truth2::NQ_OUTPUT));
-		addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL3] + 12, STD_ROWS6[STD_ROW6] - 19), module, Truth2::NQ_LIGHT));
+		addOutput(createOutputCentered<LunettaModulaLogicOutputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS6[STD_ROW6]), module, Truth3::NQ_OUTPUT));
+		addChild(createLightCentered<SmallLight<RedLight>>(Vec(STD_COLUMN_POSITIONS[STD_COL3] + 12, STD_ROWS6[STD_ROW6] - 19), module, Truth3::NQ_LIGHT));
 	}
 
 	// include the I/O mode menu item struct we'll need when we add the theme menu items
 	#include "../modes/modeMenuItem.hpp"
 	
 	void appendContextMenu(Menu *menu) override {
-		Truth2 *module = dynamic_cast<Truth2*>(this->module);
+		Truth3 *module = dynamic_cast<Truth3*>(this->module);
 		assert(module);
 
 		// blank separator
@@ -189,4 +199,4 @@ struct Truth2Widget : ModuleWidget {
 	}
 };
 
-Model *modelTruth2 = createModel<Truth2, Truth2Widget>("Truth2");
+Model *modelTruth3 = createModel<Truth3, Truth3Widget>("Truth3");

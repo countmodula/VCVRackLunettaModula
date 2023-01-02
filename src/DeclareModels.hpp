@@ -52,4 +52,4 @@ extern Model *modelCD4562;
 extern Model *modelCD40106;
 extern Model *modelMC14530;
 extern Model *modelTruth2;
-
+extern Model *modelTruth3;
