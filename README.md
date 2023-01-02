@@ -14,9 +14,9 @@ Please note these are NOT normal synth modules, they are in no way HiFi and are 
 <hr style="width:1000px; border: 1px solid black;"/>
 <h3>Licenses</h3>
 
-All source code in this repository is copyright © 2020 Adam Verspaget/Count Modula and licensed under GNU GPLv3
+All source code in this repository is copyright © 2023 Adam Verspaget/Count Modula and licensed under GNU GPLv3
 
-All graphics including the Count Modula logo, panels and components are copyright © 2020 Adam Verspaget/Count Modula and may not be used in derivative works.
+All graphics including the Count Modula logo, panels and components are copyright © 2023 Adam Verspaget/Count Modula and may not be used in derivative works.
 
 <h3>Donate</h3>
 Whilst these modules are offered free of charge, if you like them or are using them to make money, please consider a small donation to The Count for the effort.
@@ -28,13 +28,14 @@ Follow Count Modula on facebook:
 <p>&nbsp</p>
 <a href="https://www.facebook.com/CountModula/"><img src="./img/facebook.png" alt="Count Modula on facebook"></a>
 
-<h3>Module List - Version 1.2.1</h3>
+<h3>Module List - Version 2.1.0</h3>
 <p>
 <a href="CHANGELOG.md">Change Log</a>
 </p>
 <ul>
 <li>ADC - Analogue to Digital Converter</li>
-<li>BUTTONS Hex Manual Logic</li>
+<li>Binary8 - 8-bit manual binary values</li>
+<li>BUTTONS - Hex Manual Logic</li>
 <li>DAC - Digital to Analogue Converter</li>
 <li>Ones - Constant Logical "Ones"</li>
 <li>Zeroes - Constant Logical "Zeroes"</li>
@@ -72,8 +73,13 @@ Follow Count Modula on facebook:
 <li>CD4082 Dual 4-Input AND Gate</li>
 <li>CD4086 Expandable 4-Wide 2-Input AND-OR-INVERT Gate</li>
 <li>CD40106 Hex Schmitt-Trigger Inverter</li>
+<li>CD4514 4-Bit Latched/4-to-16 Line Decoder (Active High Outputs)</li>
+<li>CD4515 4-Bit Latched/4-to-16 Line Decoder (Active Low Outputs)</li>
+<li>CD4516 Presettable Binary Up/Down Counter</li>
 <li>CD4532 8-Bit Priority Encoder</li>
+<li>CD4539 Dual 4-Input Multiplexer</li>
 <li>CD4562 128 Stage Static Shift Register</li>
-<li>CD40106 Hex Schmitt-Trigger Inverter</li>
 <li>MC14530 Dual 5 Input Majority Gate</li>
+<li>Truth2 2-Bit Truth Table</li>
+<li>Truth3 3-Bit Truth Table</li>
 </ul>
