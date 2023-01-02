@@ -50,6 +50,8 @@ p->addModel(modelCD4514);
 p->addModel(modelCD4515);
 p->addModel(modelCD4516);
 p->addModel(modelCD4532);
+p->addModel(modelCD4539);
 p->addModel(modelCD4562);
 p->addModel(modelCD40106);
 p->addModel(modelMC14530);
+p->addModel(modelTruth2);

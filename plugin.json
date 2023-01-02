@@ -388,6 +388,22 @@
 			"Utility",
 			"Control"
 		  ]
+		},
+		{
+		  "slug": "CD4539",
+		  "name": "CD4539 Dual 4-Input Multiplexer",
+		  "description": "Dual 4-Input Multiplexer",
+		  "tags": [
+			"Logic"
+		  ]
+		},
+		{
+		  "slug": "Truth2",
+		  "name": "2-Bit Truth Table",
+		  "description": "2-Bit Truth Table",
+		  "tags": [
+			"Logic"
+		  ]
 		}
 	]
 }

@@ -47,7 +47,9 @@ extern Model *modelCD4514;
 extern Model *modelCD4515;
 extern Model *modelCD4516;
 extern Model *modelCD4532;
+extern Model *modelCD4539;
 extern Model *modelCD4562;
 extern Model *modelCD40106;
 extern Model *modelMC14530;
+extern Model *modelTruth2;
 
