@@ -44,6 +44,17 @@ struct CD4042 : Module {
 	
 	CD4042() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		for (int g = 0; g < NUM_GATES; g++) {
+			configInput(D_INPUTS + g, rack::string::f("D%d", g + 1));
+			
+			configOutput(Q_OUTPUTS + g, rack::string::f("Q%d", g + 1));
+			configOutput(NQ_OUTPUTS + g, rack::string::f("Not Q%d", g + 1));
+		}
+		
+		configInput(CLOCK_INPUT, "Clock");
+		configInput(POLARITY_INPUT, "Polarity");
+		
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

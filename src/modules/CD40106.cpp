@@ -36,8 +36,15 @@ struct CD40106 : Module {
 	
 	CD40106() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		
 		setIOMode(CD40106_SCHMITT); // custom IO mode for this module based on the CD40106 datasheet
+		
+		char c = 'A';
+		for (int g = 0; g < NUM_GATES; g++) {
+			configInput(I_INPUTS + g, rack::string::f("Gate %d", g + 1));
+			inputInfos[I_INPUTS + g]->description = "Schmitt trigger input with thresholds at approx. 4.6 and 7 volts";
+			
+			configOutput(Q_OUTPUTS + g, rack::string::f("Gate %d %c (inverted)", g + 1, c++));
+		}
 	}
 	
 	void onReset() override {

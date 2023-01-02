@@ -1,0 +1,27 @@
+{
+  "plugin": "LunettaModula",
+  "model": "Truth2",
+  "version": "2.0.0",
+  "params": [
+    {
+      "value": 0.0,
+      "id": 0
+    },
+    {
+      "value": 0.0,
+      "id": 1
+    },
+    {
+      "value": 0.0,
+      "id": 2
+    },
+    {
+      "value": 1.0,
+      "id": 3
+    }
+  ],
+  "data": {
+    "moduleVersion": 2,
+    "ioMode": 0
+  }
+}

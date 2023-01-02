@@ -4,7 +4,7 @@
 <center>
 <img src="./img/CountModulaLunettaLogo.png" alt="Count Modula">
 <h1 style="border-bottom: 0px;font-size:50px;">Lunetta Modula by Count Modula</h1>
-<h2 style="border-bottom: 0px;">Plugin "Lunetta" modules for VCV Rack v1 by Adam Verspaget (Count Modula)</h2>
+<h2 style="border-bottom: 0px;">Plugin "Lunetta" modules for VCV Rack v2 by Adam Verspaget (Count Modula)</h2>
 </center>
 </td>
 </tr>
@@ -17,6 +17,32 @@
 <th align="center" style="width:120px;" width="120">Date</th>
 <th align="center">Release</th>
 <th align="left">Notes</th>
+</tr>
+
+<tr valign="top">
+<td align="center">02-Jan-2023</td>
+<td align="center">v2.1.0</td>
+<td>
+<ul>
+<b>New Modules:</b>
+<li>Binary8 8-bit manual binary values</li>
+<li>CD4516 CD4516 Presettable Binary Up/Down Counter</li>
+<li>CD4539 CD4539 Dual 4-Input Multiplexer</li>
+<li>Truth2 2-Bit Truth Table</li>
+<li>Truth3 3-Bit Truth Table</li>
+</ul>
+</td>
+</tr>
+
+<tr valign="top">
+<td align="center">22-Nov-2021</td>
+<td align="center">v2.0.0</td>
+<td>
+Port to v2 API
+<b>New Modules:</b>
+<li>CD4514 CD4514 4-Bit Latched/4-to-16 Line Decoder (Active High Outputs)</li>
+<li>CD4515 CD4515 4-Bit Latched/4-to-16 Line Decoder (Active Low Outputs)</li>
+</td>
 </tr>
 
 <tr valign="top">

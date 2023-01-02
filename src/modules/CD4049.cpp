@@ -37,6 +37,12 @@ struct CD4049 : Module {
 	CD4049() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
+		
+		char c = 'A';
+		for (int g = 0; g < NUM_GATES; g++) {
+			configInput(I_INPUTS + g, rack::string::f("Gate %d", g + 1));
+			configOutput(Q_OUTPUTS + g, rack::string::f("Gate %d %c (inverted)", g + 1, c++));
+		}
 	}
 	
 	void onReset() override {

@@ -48,6 +48,18 @@ struct CD4022 : Module {
 	
 	CD4022() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		configInput(CLOCK_INPUT, "Clock");
+		configInput(INHIBIT_INPUT, "Inhibit");
+		configInput(RESET_INPUT, "Reset");
+		inputInfos[INHIBIT_INPUT]->description = "Disables the clock and inhibits the count";
+		inputInfos[RESET_INPUT]->description = "Resets count to 0";
+		
+		for (int c = 0; c < MAX_COUNT; c++)
+			configOutput(DECODED_OUTPUTS + c, rack::string::f("Decoded %d", c));
+			
+		configOutput(CARRY_OUTPUT, "Carry");		
+		
 		setIOMode(VCVRACK_STANDARD);
 		reset = false;
 		carry = false;

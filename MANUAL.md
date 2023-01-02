@@ -4,7 +4,7 @@
 <center>
 <img src="./img/CountModulaLunettaLogo.png" alt="Count Modula">
 <h1 style="border-bottom: 0px;font-size:50px;">Lunetta Modula by Count Modula</h1>
-<h2 style="border-bottom: 0px;">Plugin "Lunetta" modules for VCV Rack v1 by Adam Verspaget (Count Modula)</h2>
+<h2 style="border-bottom: 0px;">Plugin "Lunetta" modules for VCV Rack v2 by Adam Verspaget (Count Modula)</h2>
 </center>
 </td>
 </tr>
@@ -44,6 +44,12 @@ A set of constant logical "Ones".
 
 <h3>Zeroes</h3>
 A set of constant logical "Zeroes".
+
+<h3>Binary8</h3>
+Manually dial up 8-bit manual binary values using a single knob.
+
+<h3>Truth 2/Truth 3</h3>
+Create custom logic gates using a standard truth table.
 
 <h3>CD40106</h3>
 The CD10406 Hex Schmitt-Trigger Inverter is a logical inverter with a schmitt-trigger input having a positive trigger threshold voltage of approximately 7V and a negative trigger threshold voltage of approximately 4.6V. These are consitent with a Vdd supply of 12V. As such, the outputs of some modules in VCV Rack may not reach a sufficient voltage trigger the inverter.

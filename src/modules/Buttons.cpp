@@ -45,8 +45,11 @@ struct Buttons : Module {
 	Buttons() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		
-		for (int g = 0; g < NUM_GATES; g++) 
-			configParam(BTN_PARAMS + g, 0.0f, 1.0f, 0.0f, "High/low");
+		char c = 'A';
+		for (int g = 0; g < NUM_GATES; g++) {
+			configButton(BTN_PARAMS + g, rack::string::f("Button %c", c));
+			configOutput(BTN_PARAMS + g, rack::string::f("Button %c", c++));
+		}
 			
 		moduleVersion = 2;
 	}

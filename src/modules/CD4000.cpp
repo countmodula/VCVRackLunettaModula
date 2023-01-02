@@ -47,6 +47,18 @@ struct CD4000 : Module {
 	CD4000() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
+		
+		char iLabel = 'A';
+		char oLabel= 'J';
+		for (int g = 0; g < NUM_GATES; g++) {
+			configInput(A_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configInput(B_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configInput(C_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configOutput(Q_OUTPUTS + g, rack::string::f("Gate %d %c", g + 1, oLabel++));
+		}
+		
+		configInput(G_INPUT, rack::string::f("Inverter %c", iLabel));
+		configOutput(L_OUTPUT, rack::string::f("Inverter %c", oLabel));
 	}
 	
 	void onReset() override {

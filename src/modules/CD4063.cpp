@@ -25,15 +25,14 @@ struct CD4063 : Module {
 		NUM_INPUTS
 	};
 	enum OutputIds {
-		ENUMS(Q_OUTPUTS, NUM_GATES),
+		ENUMS(Dummy, NUM_GATES),
 		LT_OUTPUT,
 		EQ_OUTPUT,
 		GT_OUTPUT,
 		NUM_OUTPUTS
 	};
 	enum LightIds {
-		ENUMS(Q_LIGHTS, NUM_GATES),
-		LT_LIGHT,
+			LT_LIGHT,
 		EQ_LIGHT,
 		GT_LIGHT,
 		NUM_LIGHTS
@@ -50,6 +49,25 @@ struct CD4063 : Module {
 	
 	CD4063() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		for (int i = 0; i < NUM_GATES; i ++) {
+			configInput(A_INPUTS + i, rack::string::f("A%d", i + 1));
+			configInput(B_INPUTS + i, rack::string::f("B%d", i + 1));
+		}
+		
+		inputInfos[A_INPUTS]->description = "Least significant bit";
+		inputInfos[B_INPUTS]->description = "Least significant bit";
+		inputInfos[A_INPUTS + NUM_GATES -1]->description = "Most significant bit";
+		inputInfos[B_INPUTS + NUM_GATES -1]->description = "Most significant bit";
+		
+		configInput(LT_INPUT, "A less than B");
+		configInput(EQ_INPUT, "A equals B");
+		configInput(GT_INPUT, "A greater than B");
+		
+		configOutput(LT_OUTPUT, "A less than B");
+		configOutput(EQ_OUTPUT, "A equals B");
+		configOutput(GT_OUTPUT, "A greater than B");
+		
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

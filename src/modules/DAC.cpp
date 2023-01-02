@@ -57,11 +57,18 @@ struct DAC : Module {
 		configParam(SCALE_PARAM, 0.0f, 10.0f, 10.0f, "Output scale", " Volts");
 		configParam(OFFSET_PARAM, -5.0f, 5.0f, 0.0f, "Output offset", " Volts");
 
+		for (int b = 0; b < 8; b++)
+			configInput(DIGITAL_INPUTS + b, rack::string::f("Bit %d", b + 1));
+	
+		inputInfos[DIGITAL_INPUTS]->description = "Least significant bit";
+		inputInfos[DIGITAL_INPUTS + 7]->description = "Most significant bit";
+		
+		configOutput(ANALOGUE_OUPUT, "Analogue");
+
 		setIOMode(VCVRACK_STANDARD);
 		
 		analogeValue = 0.0f;
 		displayValue = 0.0f;
-			
 	}
 	
 	void onReset() override {
@@ -121,7 +128,6 @@ struct DAC : Module {
 					digitalValue += bitmap[b];
 			}
 			
-
 			if (digitalValue != prevDigitalValue) {
 				prevDigitalValue = digitalValue;
 				analogeValue = (vRef / maxBits[bits] * (float)digitalValue);
@@ -153,9 +159,9 @@ struct DACWidget : ModuleWidget {
 			addInput(createInputCentered<LunettaModulaLogicInputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL1], STD_ROWS8[STD_ROW1 + b]), module, DAC::DIGITAL_INPUTS + b));
 
 		// converter section
-		addParam(createParamCentered<LunettaModulaRotarySwitchRed>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_HALF_ROWS8(STD_ROW2)), module, DAC::BITS_PARAM));
-		addParam(createParamCentered<LunettaModulaKnobRed>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS8[STD_ROW4]), module, DAC::SCALE_PARAM));
-		addParam(createParamCentered<LunettaModulaKnobRed>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_HALF_ROWS8(STD_ROW5)), module, DAC::OFFSET_PARAM));
+		addParam(createParamCentered<RotarySwitch<RedKnob>>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_HALF_ROWS8(STD_ROW2)), module, DAC::BITS_PARAM));
+		addParam(createParamCentered<Potentiometer<RedKnob>>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS8[STD_ROW4]), module, DAC::SCALE_PARAM));
+		addParam(createParamCentered<Potentiometer<RedKnob>>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_HALF_ROWS8(STD_ROW5)), module, DAC::OFFSET_PARAM));
 		
 		// analogue output
 		addOutput(createOutputCentered<LunettaModulaAnalogOutputJack>(Vec(STD_COLUMN_POSITIONS[STD_COL3], STD_ROWS8[STD_ROW7]), module, DAC::ANALOGUE_OUPUT));

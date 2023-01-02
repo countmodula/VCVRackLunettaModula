@@ -43,6 +43,16 @@ struct CD4072 : Module {
 	CD4072() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		setIOMode(VCVRACK_STANDARD);
+		
+		char iLabel = 'A';
+		char oLabel= 'J';
+		for (int g = 0; g < NUM_GATES; g++) {
+			configInput(A_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configInput(B_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configInput(C_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configInput(D_INPUTS + g, rack::string::f("Gate %d %c", g + 1, iLabel++));
+			configOutput(Q_OUTPUTS + g, rack::string::f("Gate %d %c", g + 1, oLabel++));
+		}
 	}
 	
 	void onReset() override {

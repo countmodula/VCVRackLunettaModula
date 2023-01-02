@@ -50,6 +50,26 @@ struct CD4532 : Module {
 
 	CD4532() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		for (int d =0; d < 8; d++)
+			configInput(DIGITAL_INPUTS + d, rack::string::f("D%d", d));
+			
+		inputInfos[DIGITAL_INPUTS]->description = "Lowest priority";
+		inputInfos[DIGITAL_INPUTS + 7]->description = "Highest priority";
+			
+		configInput(E_INPUT, "Enable");
+		inputInfos[E_INPUT]->description = "Requires a logical high to enable the encoder";
+		
+		configOutput(BIN_OUPUTS, "Q0");
+		configOutput(BIN_OUPUTS + 1, "Q1");
+		configOutput(BIN_OUPUTS + 2, "Q2");
+			
+		outputInfos[BIN_OUPUTS]->description = "Least significant bit";
+		outputInfos[BIN_OUPUTS + 2]->description = "Most significant bit";
+
+		configOutput(E_OUTPUT, "Enable");
+		configOutput(GS_OUTPUT, "Group select");
+		
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

@@ -41,6 +41,7 @@ struct CD4020 : Module {
 	CMOSInput resetInput;
 
 	const int bitmap[NUM_BITS_PLUS_1] = { 0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192 };
+	const int outputLabels[NUM_BITS] = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384 };
 
 	int count = 0;
 	bool update = true;
@@ -48,6 +49,19 @@ struct CD4020 : Module {
 	
 	CD4020() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		configInput(CLOCK_INPUT, "Clock");
+		configInput(RESET_INPUT, "Reset");
+		inputInfos[CLOCK_INPUT]->description = "Negative edge triggered";
+		inputInfos[RESET_INPUT]->description = "Resets count to 0, holds all outputs low when high";
+		
+		for (int b = 0; b < NUM_BITS; b++) {
+			configOutput(DIVIDE_OUTPUTS + b, rack::string::f("Q%d", b + 1));
+			outputInfos[DIVIDE_OUTPUTS + b]->description = rack::string::f("Divide by %d", outputLabels[b]);
+		}
+
+		configOutput(CARRY_OUTPUT, "Carry");
+		
 		setIOMode(VCVRACK_STANDARD);
 		update = true;
 		reset = false;

@@ -52,6 +52,18 @@ struct CD4031 : Module {
 	
 	CD4031() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		configInput(DATA_INPUT, "Data");
+		configInput(CLOCK_INPUT, "Clock");
+		configInput(RECIRC_INPUT, "Recirculate");
+		configInput(MODE_INPUT, "Mode");
+		inputInfos[MODE_INPUT]->description = "Low to select data input, high to select recirculate input";
+		
+		configOutput(DEL_CLOCK_OUTPUT, "Delayed clock");
+		outputInfos[DEL_CLOCK_OUTPUT]->description = "Clock delayed by 1 sample";
+		configOutput(Q_OUTPUT, "Q");
+		configOutput(NQ_OUTPUT, "Not Q");
+		
 		setIOMode(VCVRACK_STANDARD);
 	}
 	

@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------------
-//	Lunetta Modula Plugin for VCV Rack by Count Modula - CD4086
+//	Lunetta Modula Plugin for VCV Rack by Count Modula - CD4086	
 //	Expandable 4-Wide 2-Input AND-OR-INVERT Gate
 //  Copyright (C) 2020  Adam Verspaget
 //----------------------------------------------------------------------------
@@ -46,6 +46,18 @@ struct CD4086 : Module {
 	
 	CD4086() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		char c = 'A';
+		for (int g = 0; g < NUM_GATES; g++) {
+			configInput(A_INPUTS + g,rack::string::f("%c", c++));
+			configInput(B_INPUTS + g,rack::string::f("%c", c++));
+		}
+		
+		configInput(INH_INPUT, "Inhibit");
+		configInput(EN_INPUT, "Enable");
+		
+		configOutput(J_OUTPUT, "J");
+		
 		setIOMode(VCVRACK_STANDARD);
 		
 		processCount = 8;

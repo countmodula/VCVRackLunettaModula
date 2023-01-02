@@ -7,7 +7,6 @@
 
 using namespace rack;
 
-
 //-------------------------------------------------------------------
 // screws
 //-------------------------------------------------------------------
@@ -60,33 +59,48 @@ struct LunettaModulaAnalogOutputJack : SvgPort {
 //-------------------------------------------------------------------
 // Knobs
 //-------------------------------------------------------------------
-
-// base knob
-struct LunettaModulaKnob : SvgKnob {
+struct LunettaModulaKnob : app::SvgKnob {
+	widget::SvgWidget* bg;
+	widget::SvgWidget* fg;
+	std::string svgFile = "";
+	float orientation = 0.0;
+	
 	LunettaModulaKnob() {
+		svgFile = "";
+		orientation = 0.0;
 		minAngle = -0.83*M_PI;
 		maxAngle = 0.83*M_PI;
+
+		bg = new widget::SvgWidget;
+		bg->setSvg(Svg::load(asset::plugin(pluginInstance, "res/Components/Knob-bg.svg")));
+		fb->addChildBelow(bg, tw);
+		
+		fg = new widget::SvgWidget;
+		fb->addChildBelow(fg, tw);
+
+		this->setSvg(Svg::load(asset::plugin(pluginInstance, "res/Components/KnobPointer.svg")));
 	}
 };
 
-// coloured knobs
-struct LunettaModulaKnobRed : LunettaModulaKnob {
-	LunettaModulaKnobRed() {
-		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/KnobRed.svg")));
+// red knob
+template <typename TBase = LunettaModulaKnob>
+struct TRedKnob : TBase {
+	TRedKnob() {
+		this->svgFile = "Red";
+		this->fg->setSvg(Svg::load(asset::plugin(pluginInstance, "res/Components/Knob-" + this->svgFile + "-fg.svg")));		
 	}
 };
+typedef TRedKnob<> RedKnob;
 
 //-------------------------------------------------------------------
-// rotary switches
+// Rotary controls
 //-------------------------------------------------------------------
-// TODO: parameterise the colour
-
-struct LunettaModulaRotarySwitch : SvgKnob {
-	LunettaModulaRotarySwitch() {
-		minAngle = -0.83*M_PI;
-		maxAngle = 0.83*M_PI;
-		snap = true;
-		smooth = false;
+// Rotary switch base - values are limted to whole numbers
+template <typename TBase>
+struct RotarySwitch : TBase {
+	RotarySwitch() {
+		this->snap = true;
+		this->smooth = false;
 	}
 	
 	// handle the manually entered values
@@ -94,22 +108,14 @@ struct LunettaModulaRotarySwitch : SvgKnob {
 		
 		SvgKnob::onChange(e);
 		
-		paramQuantity->setValue(roundf(paramQuantity->getValue()));
+		this->getParamQuantity()->setValue(roundf(this->getParamQuantity()->getValue()));
 	}
-	
-	
-	// override the base randomizer as it sets switches to invalid values.
-	void randomize() override {
-		SvgKnob::randomize();
-		
-		paramQuantity->setValue(roundf(paramQuantity->getValue()));
-	}	
-	
 };
 
-struct LunettaModulaRotarySwitchRed : LunettaModulaRotarySwitch {
-	LunettaModulaRotarySwitchRed() {
-		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/KnobRed.svg")));
+// standard rotary potentiometer base
+template <typename TBase>
+struct Potentiometer : TBase {
+	Potentiometer() {
 	}
 };
 
@@ -134,31 +140,18 @@ struct LunettaModulaToggle2P : SvgSwitch {
 	void onChange(const event::Change &e) override {
 		
 		SvgSwitch::onChange(e);
-		
-		if (paramQuantity->getValue() > 0.5f)
-			paramQuantity->setValue(1.0f);
-		else
-			paramQuantity->setValue(0.0f);
-	}
-	
-	// override the base randomizer as it sets switches to invalid values.
-	void randomize() override {
-		SvgSwitch::randomize();
 
-		if (paramQuantity->getValue() > 0.5f)
-			paramQuantity->setValue(1.0f);
+		if (getParamQuantity()->getValue() > 0.5f)
+			getParamQuantity()->setValue(1.0f);
 		else
-			paramQuantity->setValue(0.0f);
-	}	
+			getParamQuantity()->setValue(0.0f);
+	}
 };
 
 //-------------------------------------------------------------------
 // on-off-on toggle switch
 //-------------------------------------------------------------------
 struct LunettaModulaToggle3P : SvgSwitch {
-	int pos;
-	int neg;
-	
 	LunettaModulaToggle3P() {
 		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/SW_Toggle_0.svg")));
 		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Components/SW_Toggle_1.svg")));
@@ -166,33 +159,20 @@ struct LunettaModulaToggle3P : SvgSwitch {
 		
 		// no shadow for switches
 		shadow->opacity = 0.0f;
-		
-		neg = pos = 0;
 	}
 
 	// handle the manually entered values
 	void onChange(const event::Change &e) override {
 		
 		SvgSwitch::onChange(e);
+		float v = getParamQuantity()->getValue();
 		
-		if (paramQuantity->getValue() > 1.33f)
-			paramQuantity->setValue(2.0f);
-		else if (paramQuantity->getValue() > 0.67f)
-			paramQuantity->setValue(1.0f);
+		if (v > 1.33f)
+			getParamQuantity()->setValue(2.0f);
+		else if (v > 0.67f)
+			getParamQuantity()->setValue(1.0f);
 		else
-			paramQuantity->setValue(0.0f);
-	}
-	
-	// override the base randomizer as it sets switches to invalid values.
-	void randomize() override {
-		SvgSwitch::randomize();
-		
-		if (paramQuantity->getValue() > 1.33f)
-			paramQuantity->setValue(2.0f);
-		else if (paramQuantity->getValue() > 0.67f)
-			paramQuantity->setValue(1.0f);
-		else
-			paramQuantity->setValue(0.0f);
+			getParamQuantity()->setValue(0.0f);
 	}
 };
 

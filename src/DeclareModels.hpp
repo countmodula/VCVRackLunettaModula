@@ -6,6 +6,7 @@
 
 extern Model *modelADC;
 extern Model *modelDAC;
+extern Model *modelBinary8;
 extern Model *modelButtons;
 extern Model *modelConstantOnes;
 extern Model *modelConstantZeroes;
@@ -42,7 +43,13 @@ extern Model *modelCD4078;
 extern Model *modelCD4081;
 extern Model *modelCD4082;
 extern Model *modelCD4086;
+extern Model *modelCD4514;
+extern Model *modelCD4515;
+extern Model *modelCD4516;
 extern Model *modelCD4532;
+extern Model *modelCD4539;
 extern Model *modelCD4562;
 extern Model *modelCD40106;
 extern Model *modelMC14530;
+extern Model *modelTruth2;
+extern Model *modelTruth3;

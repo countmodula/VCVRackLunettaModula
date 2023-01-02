@@ -6,6 +6,7 @@
 
 // utilities
 p->addModel(modelADC);
+p->addModel(modelBinary8);
 p->addModel(modelButtons);
 p->addModel(modelConstantOnes);
 p->addModel(modelConstantZeroes);
@@ -45,7 +46,13 @@ p->addModel(modelCD4078);
 p->addModel(modelCD4081);
 p->addModel(modelCD4082);
 p->addModel(modelCD4086);
+p->addModel(modelCD4514);
+p->addModel(modelCD4515);
+p->addModel(modelCD4516);
 p->addModel(modelCD4532);
+p->addModel(modelCD4539);
 p->addModel(modelCD4562);
 p->addModel(modelCD40106);
 p->addModel(modelMC14530);
+p->addModel(modelTruth2);
+p->addModel(modelTruth3);

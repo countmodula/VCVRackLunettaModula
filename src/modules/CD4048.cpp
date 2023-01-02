@@ -61,6 +61,21 @@ struct CD4048 : Module {
 	
 	CD4048() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		char ca = 'A';
+		char ce = 'E';
+		for (int i = 0; i < NUM_GATES; i ++) {
+			configInput(ABCD_INPUTS + i, rack::string::f("%c", ca++));
+			configInput(EFGH_INPUTS + i, rack::string::f("%c", ce++));
+		}
+		
+		configInput(EXP_INPUT, "Expand");
+		configInput(KA_INPUT, "KA");
+		configInput(KB_INPUT, "KB");
+		configInput(KC_INPUT, "KC");
+		
+		configOutput(J_OUTPUT, "J");
+				
 		setIOMode(VCVRACK_STANDARD);
 		
 		processCount = 8;
