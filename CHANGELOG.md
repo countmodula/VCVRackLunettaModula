@@ -26,8 +26,8 @@
 <ul>
 <b>New Modules:</b>
 <li>Binary8 8-bit manual binary values</li>
-<li>CD4516 CD4516 Presettable Binary Up/Down Counter</li>
-<li>CD4539 CD4539 Dual 4-Input Multiplexer</li>
+<li>CD4516 Presettable Binary Up/Down Counter</li>
+<li>CD4539 Dual 4-Input Multiplexer</li>
 <li>Truth2 2-Bit Truth Table</li>
 <li>Truth3 3-Bit Truth Table</li>
 </ul>
@@ -39,9 +39,11 @@
 <td align="center">v2.0.0</td>
 <td>
 Port to v2 API
+<ul>
 <b>New Modules:</b>
 <li>CD4514 CD4514 4-Bit Latched/4-to-16 Line Decoder (Active High Outputs)</li>
 <li>CD4515 CD4515 4-Bit Latched/4-to-16 Line Decoder (Active Low Outputs)</li>
+</ul>
 </td>
 </tr>
 
